@@ -27,4 +27,4 @@ The post-chain ladder filter computes its prewarp coefficient as `tan(2π·fc/fs
 - Code: `src/dsp/post_processing/wdf_filter.rs` (coefficient computation, cutoff clamp, unit tests).
 - Tests: new regression tests in the filter's test module and/or `tests/` exercising the full post chain at the default cutoff.
 - Presets/renders: no preset file changes; preset WAV renders under `output/` may be re-rendered for audition once the fix lands (they currently bypass the post chain — review H13 — so they do not show the bug).
-- Docs: `FABLE-CODE-REVIEW-2026-07-07.md` C1 status.
+- Docs: `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C1 status.

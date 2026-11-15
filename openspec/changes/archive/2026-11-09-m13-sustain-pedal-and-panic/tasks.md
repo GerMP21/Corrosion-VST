@@ -20,4 +20,4 @@
 
 ## 4. Docs and close-out
 
-- [x] 4.1 Document the MIDI controllers in the README and the pedal in `docs/ARCHITECTURE.md`'s voice lifecycle; mark M13 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md` (M12's MPE part stays open). Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 4.1 Document the MIDI controllers in the README and the pedal in `docs/ARCHITECTURE.md`'s voice lifecycle; mark M13 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` (M12's MPE part stays open). Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

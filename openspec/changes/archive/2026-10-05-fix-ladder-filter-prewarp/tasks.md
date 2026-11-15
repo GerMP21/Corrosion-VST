@@ -24,7 +24,7 @@
 ## 4. Close out
 
 - [x] 4.1 Run `cargo fmt --check` and `cargo clippy --no-default-features --all-targets`; verify no new warnings
-- [x] 4.2 Update `FABLE-CODE-REVIEW-2026-07-07.md` C1 status from IN PROGRESS to FIXED with the commit reference, and note the corrected "octave above, not below" observation; verify the heading and priority list reflect the new status
+- [x] 4.2 Update `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C1 status from IN PROGRESS to FIXED with the commit reference, and note the corrected "octave above, not below" observation; verify the heading and priority list reflect the new status
 
 ## 5. Verification follow-up
 
@@ -32,4 +32,4 @@
 - [x] 5.2 Switch tail checks from the mean to the per-sample maximum, assert the prewarp coefficient is finite and positive above Nyquist, and make the cutoff-energy test broadband (white noise, energy above 4 kHz); update the spec scenarios to match
 - [x] 5.3 Gate component-tolerance jitter on non-zero input (Decision 7) and add `tolerance_adds_nothing_to_silence`
 - [x] 5.4 Set the BODY amount in `tests/post_chain_default_dc.rs` so the DC guard covers the body path (default BODY is 2.62 since C5)
-- [x] 5.5 Update `docs/detailed-specs/post-processing.md`, the module docs, and the code review's C1 entry (commit `d33bb26`, plus this follow-up)
+- [x] 5.5 Update `docs/original-specs/post-processing.md`, the module docs, and the code review's C1 entry (commit `d33bb26`, plus this follow-up)

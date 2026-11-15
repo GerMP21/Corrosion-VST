@@ -14,4 +14,4 @@
 ## 3. Presets and docs
 
 - [x] 3.1 Run `preset_levels_table`. Apply any trims to `PRESET_LEVELS`, regenerate with `seed_presets`, and write `levels.md` with before and after for the five Factory presets. Verify `preset_levels_are_sane` and `tests/preset_roundtrip.rs` pass.
-- [x] 3.2 Update `docs/detailed-specs/post-processing.md` (or ARCHITECTURE's post-chain section) with the time-defined delays and the buffer sizing. Mark H10 and M16 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
+- [x] 3.2 Update `docs/original-specs/post-processing.md` (or ARCHITECTURE's post-chain section) with the time-defined delays and the buffer sizing. Mark H10 and M16 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.

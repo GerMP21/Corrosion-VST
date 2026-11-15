@@ -7,4 +7,4 @@
 
 ## 2. Close-out
 
-- [x] 2.1 Mark H8 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full test suite, and verify all are green, including the host state round-trip tests (`tests/preset_roundtrip.rs`).
+- [x] 2.1 Mark H8 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full test suite, and verify all are green, including the host state round-trip tests (`tests/preset_roundtrip.rs`).

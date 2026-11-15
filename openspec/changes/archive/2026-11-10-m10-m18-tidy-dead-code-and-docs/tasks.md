@@ -20,4 +20,4 @@
 
 ## 5. Close-out
 
-- [x] 5.1 Mark M2, M10, M11, M14, M15, M17 (naming part; decorrelation noted as not done), M18 and M19 in `FABLE-CODE-REVIEW-2026-07-07.md`, plus the two tooling notes. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 5.1 Mark M2, M10, M11, M14, M15, M17 (naming part; decorrelation noted as not done), M18 and M19 in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, plus the two tooling notes. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

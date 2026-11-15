@@ -23,4 +23,4 @@ In `SpaceMode::Spring` the post chain calls `spring_reverb.process(left)` and th
 - Code: `src/dsp/post_processing/post_chain.rs` (two spring instances or a stereo wrapper), possibly `src/dsp/post_processing/space.rs` (reset also clears the write index).
 - Memory: one more 8192-sample delay line (32 KB) per plugin instance.
 - Tests: new spring tests for channel isolation, echo timing, and mono-in/mono-out.
-- Docs: `FABLE-CODE-REVIEW-2026-07-07.md` C6 status.
+- Docs: `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C6 status.

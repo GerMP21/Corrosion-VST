@@ -26,7 +26,7 @@
 ## 5. Close out
 
 - [x] 5.1 Run `cargo test --no-default-features --release`, `cargo fmt --check`, `cargo clippy --no-default-features --all-targets`, and `cargo bench --no-run`; verify all green with no new warnings
-- [x] 5.2 Update `FABLE-CODE-REVIEW-2026-07-07.md` C3 status from IN PROGRESS to FIXED with the commit reference; verify the heading, the tests section bullet, and the priority list reflect the new status
+- [x] 5.2 Update `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C3 status from IN PROGRESS to FIXED with the commit reference; verify the heading, the tests section bullet, and the priority list reflect the new status
 
 ## 6. Verification follow-up
 

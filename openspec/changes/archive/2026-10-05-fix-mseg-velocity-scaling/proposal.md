@@ -24,7 +24,7 @@ The MSEG that shapes friction-family exciters applies velocity with `0.5 + (leve
 - Code: `src/dsp/envelopes/mod.rs` (`process_sample` level/velocity math; Release → Idle).
 - Tests: new envelope tests for silence at zero level, velocity scaling, `velocity_to_level = 0`, and release continuity; the C2 golden hashes are re-captured with the reason recorded.
 - Presets: no file changes. Friction presets at sub-maximal velocity sound quieter in sustain and release.
-- Docs: `FABLE-CODE-REVIEW-2026-07-07.md` C4 status.
+- Docs: `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C4 status.
 
 ### Added after verification
 

@@ -8,4 +8,4 @@
 
 ## 2. Close-out
 
-- [x] 2.1 Mark H14 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
+- [x] 2.1 Mark H14 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.

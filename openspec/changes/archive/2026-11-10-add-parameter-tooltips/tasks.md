@@ -14,8 +14,8 @@
 
 ## 3. Help texts
 
-- [x] 3.1 Add `help` to `ExciterControlSpec` and write the 61 exciter slot texts from the exciter code and `docs/detailed-specs/exciter-algorithms.md`. Verify by test 1.2.
-- [x] 3.2 Add `help` to `ResonatorControlSpec` and write the 30 object slot texts from `docs/detailed-specs/resonator-algorithms.md`. Verify by test 1.2.
+- [x] 3.1 Add `help` to `ExciterControlSpec` and write the 61 exciter slot texts from the exciter code and `docs/original-specs/exciter-algorithms.md`. Verify by test 1.2.
+- [x] 3.2 Add `help` to `ResonatorControlSpec` and write the 30 object slot texts from `docs/original-specs/resonator-algorithms.md`. Verify by test 1.2.
 - [x] 3.3 Write help for the global controls: material transforms, filter, drive, body, spread, Space, clipper, limiter, output, envelope and macros. Use the names after `m01-m04-m05-clarify-parameters`. Verify by test 1.1.
 - [x] 3.4 Write the trial selector texts (exciter and object options reuse the panel `description`; Space mode, Play Mode, Limiter Mode, Randomizer mode and others get short texts). Verify by test 1.1.
 

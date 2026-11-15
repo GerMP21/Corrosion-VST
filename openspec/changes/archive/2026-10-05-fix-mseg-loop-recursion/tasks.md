@@ -21,7 +21,7 @@
 
 - [x] 4.1 Add a test in `tests/` that plays a friction-family note (e.g. Bow) through `VoiceManager` with loop Forward, start 4, end 4 for 2 s and asserts finite output; verify it passes
 - [x] 4.2 Run `cargo test --no-default-features --release`, `cargo fmt --check`, and `cargo clippy --no-default-features --all-targets`; verify all green with no new warnings
-- [x] 4.3 Update `FABLE-CODE-REVIEW-2026-07-07.md` C2 status from IN PROGRESS to FIXED with the commit reference (noting PingPong remains partial); verify the heading and priority list reflect the new status
+- [x] 4.3 Update `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C2 status from IN PROGRESS to FIXED with the commit reference (noting PingPong remains partial); verify the heading and priority list reflect the new status
 
 ## 5. Verification follow-up
 

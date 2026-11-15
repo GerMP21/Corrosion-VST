@@ -13,7 +13,7 @@
 ## 3. Editor, docs and close-out
 
 - [x] 3.1 Add a Wander Rate knob beside Wander, and fix the Position Envelope tooltip and docs in `src/params.rs`, `docs/ARCHITECTURE.md` (interaction bus) and the README. Verify the editor builds and `cargo doc` adds no warnings.
-- [x] 3.2 Regenerate the factory presets. Verify the only diff is the new field at its default, and that `preset_levels_are_sane` passes. Mark H9 FIXED, along with "Missing features" item 6, in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
+- [x] 3.2 Regenerate the factory presets. Verify the only diff is the new field at its default, and that `preset_levels_are_sane` passes. Mark H9 FIXED, along with "Missing features" item 6, in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
 
 ## 4. Host state (follow-up)
 

@@ -17,4 +17,4 @@
 
 ## 3. Docs and close-out
 
-- [x] 3.1 Update `docs/ARCHITECTURE.md` (sample-rate rule: voices are rated at initialization; latency reporting) and mark M3 and M20 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 3.1 Update `docs/ARCHITECTURE.md` (sample-rate rule: voices are rated at initialization; latency reporting) and mark M3 and M20 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

@@ -17,4 +17,4 @@
 
 ## 4. Docs and close-out
 
-- [x] 4.1 Document Onset Level, the new names and the Output taper (with the BREAKING automation note) in the README and `docs/ARCHITECTURE.md`; mark M1, M4 and M5 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 4.1 Document Onset Level, the new names and the Output taper (with the BREAKING automation note) in the README and `docs/ARCHITECTURE.md`; mark M1, M4 and M5 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

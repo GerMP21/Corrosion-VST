@@ -13,4 +13,4 @@
 ## 3. Artifacts, docs and close-out
 
 - [x] 3.1 Re-render `output/*.wav` with `render_presets`, and update the README render instructions. Verify every preset has a WAV and that `scripts/check_wav.py` passes on a sample of them.
-- [x] 3.2 Mark H13 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
+- [x] 3.2 Mark H13 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy and the full suite, and verify all are green.
