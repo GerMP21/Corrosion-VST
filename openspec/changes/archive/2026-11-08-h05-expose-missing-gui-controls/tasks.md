@@ -24,4 +24,4 @@
 
 ## 4. Close-out
 
-- [x] 4.1 Update the README (user preset folder per platform, randomizer modes). Mark H5 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`, along with the "Missing features" items 1, 2 and 5. Run fmt, clippy (default features) and the full test suite, and verify all are green. (Done. Default-feature clippy shows only warnings in existing editor code, and the one new warning, in a test, is fixed. `--no-default-features` clippy is clean with `-D warnings -A unknown_lints` on this container's 1.97 toolchain.)
+- [x] 4.1 Update the README (user preset folder per platform, randomizer modes). Mark H5 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, along with the "Missing features" items 1, 2 and 5. Run fmt, clippy (default features) and the full test suite, and verify all are green. (Done. Default-feature clippy shows only warnings in existing editor code, and the one new warning, in a test, is fixed. `--no-default-features` clippy is clean with `-D warnings -A unknown_lints` on this container's 1.97 toolchain.)

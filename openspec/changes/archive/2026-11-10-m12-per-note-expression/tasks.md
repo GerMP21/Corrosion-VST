@@ -15,4 +15,4 @@
 
 ## 4. Docs and close-out
 
-- [x] 4.1 Document note expressions in the README and `docs/ARCHITECTURE.md`; mark M12 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md` (noting channel MPE as out of scope). Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 4.1 Document note expressions in the README and `docs/ARCHITECTURE.md`; mark M12 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` (noting channel MPE as out of scope). Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

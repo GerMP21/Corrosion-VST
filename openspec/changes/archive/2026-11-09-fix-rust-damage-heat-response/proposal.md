@@ -8,7 +8,7 @@ The maintainer reported that raising Rust or Damage turns the sound down until i
 - **Damage** loses the fundamental from about 4 (range 0–10). The note jumps up nearly three octaves (lowest mode 1 746 Hz at Damage 6), and the sound is silent at 10. The primary mode's decay factor `1 − d·(0.10 + 0.18·low)` dies first on the low modes, and the companion's decay formula turns negative from about 3.3. Loudness isn't monotonic either: −41 dB at 4, −32 dB at 6.
 - **Heat** (range 0–1) only lowers the pitch by up to 5 %. Its brightness loss is a uniform gain, which the note-on bank normalization cancels (−0.04 dB). The specification's thermal wander is missing.
 
-The intended models (`docs/detailed-specs/transformation-algorithms.md`): Rust is a frequency-dependent damping increase that leaves the low thud; Damage splits modes into beating pairs plus rattle; Heat drops the pitch, warbles, and darkens.
+The intended models (`docs/original-specs/transformation-algorithms.md`): Rust is a frequency-dependent damping increase that leaves the low thud; Damage splits modes into beating pairs plus rattle; Heat drops the pitch, warbles, and darkens.
 
 ## What Changes
 

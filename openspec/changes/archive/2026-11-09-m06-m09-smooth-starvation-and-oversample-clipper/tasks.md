@@ -17,4 +17,4 @@
 
 ## 4. Docs and close-out
 
-- [x] 4.1 Update `docs/ARCHITECTURE.md` (post chain and output protection) and the README quality-modes line; mark M6 and M9 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.
+- [x] 4.1 Update `docs/ARCHITECTURE.md` (post chain and output protection) and the README quality-modes line; mark M6 and M9 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run fmt, clippy `-D warnings` and the full suite, and verify all are green.

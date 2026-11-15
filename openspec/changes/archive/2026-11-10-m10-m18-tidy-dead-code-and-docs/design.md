@@ -19,7 +19,7 @@
 1. **One constructor per parameter.** Move each inline constructor in `CorrosionParams::default()` that `into_params` also needs into a `params.rs` function taking the value (`ui_scale_param(v)`, `filter_cutoff_param(v)`, …), and have both call it. `into_params` stops using the bare helpers. A test checks, for every parameter in the map, that the preset-built parameter has the same name, range (normalized value of the same plain value) and `value_to_string` output as the live one. *Alternative:* copy formatters after construction. nih-plug params don't expose that.
 2. **Exciter fallback stays HandStrike** (the default exciter) for values outside 1–16, documented on `ExciterType::from_int` and pinned by a test, rather than rejecting a whole user preset over one bad field.
 3. **Sound-neutral proof:** a one-off render hash of a damaged, stereo, friction-plus-hit scenario against a clean worktree, recorded in Measurements.
-4. **CODE-REVIEW.md** moves to `docs/archive/CODE-REVIEW-2026-05-27.md` with a header saying it's superseded by `FABLE-CODE-REVIEW-2026-07-07.md`; links to it are updated.
+4. **CODE-REVIEW.md** moves to `docs/archive/CODE-REVIEW-2026-05-27.md` with a header saying it's superseded by `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`; links to it are updated.
 
 ## Risks / Trade-offs
 

@@ -16,4 +16,4 @@
 
 ## 2. Close-out
 
-- [x] 2.1 Mark H4 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`, noting the `ui_scale` exclusion. Run fmt and clippy (default features and `--no-default-features`), and verify both are clean. (Done. This container's stable toolchain is 1.97, which doesn't know the `semicolon_in_expressions_from_non_local_macros` lint allowed in `src/lib.rs`, so `--no-default-features` clippy runs with `-A unknown_lints`, as the project's 1.97 gate does. The default-feature clippy warnings are all in existing editor code.)
+- [x] 2.1 Mark H4 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, noting the `ui_scale` exclusion. Run fmt and clippy (default features and `--no-default-features`), and verify both are clean. (Done. This container's stable toolchain is 1.97, which doesn't know the `semicolon_in_expressions_from_non_local_macros` lint allowed in `src/lib.rs`, so `--no-default-features` clippy runs with `-A unknown_lints`, as the project's 1.97 gate does. The default-feature clippy warnings are all in existing editor code.)

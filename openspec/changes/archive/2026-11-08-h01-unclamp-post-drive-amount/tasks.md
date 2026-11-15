@@ -10,4 +10,4 @@
 ## 2. Presets and close-out
 
 - [x] 2.1 Run `preset_levels_are_sane` and `tests/preset_roundtrip.rs`. Verify both pass, and record the three drive presets' level change in the review.
-- [x] 2.2 Mark H1 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md` with the change name. Run `cargo fmt --check` and `cargo clippy --no-default-features --all-targets -- -D warnings`, and verify both are clean.
+- [x] 2.2 Mark H1 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` with the change name. Run `cargo fmt --check` and `cargo clippy --no-default-features --all-targets -- -D warnings`, and verify both are clean.

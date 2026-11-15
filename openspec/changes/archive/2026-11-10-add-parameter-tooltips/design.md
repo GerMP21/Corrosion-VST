@@ -49,7 +49,7 @@ While a frame renders, each helper records the help text it was given, keyed by 
 A unit test also checks that every `ExciterControlSpec` and `ResonatorControlSpec` entry has non-empty help, including models the render loop might skip.
 
 ### 6. Writing the text
-Each text is one or two sentences: what the control does, then what turning it up sounds like. Use the parameter names that exist after `m01-m04-m05-clarify-parameters`. Ground the text in the DSP code and `docs/detailed-specs/` rather than guesswork. For example, Rust: "Corrodes the object: shortens the decay and darkens the upper modes. Higher values sound duller and drier."
+Each text is one or two sentences: what the control does, then what turning it up sounds like. Use the parameter names that exist after `m01-m04-m05-clarify-parameters`. Ground the text in the DSP code and `docs/original-specs/` rather than guesswork. For example, Rust: "Corrodes the object: shortens the decay and darkens the upper modes. Higher values sound duller and drier."
 
 ## Risks / Trade-offs
 

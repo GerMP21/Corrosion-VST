@@ -15,7 +15,7 @@
 ## 3. Close out
 
 - [x] 3.1 Run `cargo test --workspace --no-default-features` (debug, as CI does), `cargo test --no-default-features --release`, `cargo fmt --check`, and `cargo clippy --workspace --all-targets --no-default-features -- -D warnings`; verify all green
-- [x] 3.2 Update `FABLE-CODE-REVIEW-2026-07-07.md` C4 status from IN PROGRESS to FIXED with a short summary; verify the heading and priority list reflect it
+- [x] 3.2 Update `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C4 status from IN PROGRESS to FIXED with a short summary; verify the heading and priority list reflect it
 
 ## 4. Verification follow-up
 

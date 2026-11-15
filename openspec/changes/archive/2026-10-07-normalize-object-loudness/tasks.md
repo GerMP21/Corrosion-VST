@@ -18,5 +18,5 @@
 
 ## 4. Docs and integration
 
-- [x] 4.1 Update the README (loudness and placeholder presets) and `docs/ARCHITECTURE.md` (bank normalization; `decay_seconds` is a 1/e time constant, so T60 ≈ 6.9·τ). Note in `FABLE-CODE-REVIEW-2026-07-07.md` that the Tank overdrive and clipping found during the voice-stealing work is fixed. Verify with `grep -rn "0.5 dB of" README.md docs` that no stale level guarantee remains.
+- [x] 4.1 Update the README (loudness and placeholder presets) and `docs/ARCHITECTURE.md` (bank normalization; `decay_seconds` is a 1/e time constant, so T60 ≈ 6.9·τ). Note in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` that the Tank overdrive and clipping found during the voice-stealing work is fixed. Verify with `grep -rn "0.5 dB of" README.md docs` that no stale level guarantee remains.
 - [x] 4.2 Run the full gate: debug and release tests, `tests/no_alloc.rs` in debug, fmt, clippy on 1.97 and 1.99, the render smoke test with `scripts/check_wav.py`, and `preset_levels_are_sane`. Verify all green.

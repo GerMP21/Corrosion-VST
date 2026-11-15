@@ -35,5 +35,5 @@ The rest of the fable review's medium findings (2026-07-07), and its tooling not
 ## Impact
 
 - **Code:** `src/dsp/interaction.rs`, `src/dsp/resonators/core.rs` (the two setter calls), `src/voice/mod.rs` (redundant assignment, rattle naming), `src/presets/mod.rs` (`into_params`), `src/params.rs` (constructor helpers shared with presets, exciter docs), `src/lib.rs` (exciter comment), `src/dsp/mod.rs` and `src/dsp/tests.rs` (re-export).
-- **Docs:** README, `docs/ARCHITECTURE.md`, `docs/CODE-REVIEW.md` → `docs/archive/`, `FABLE-CODE-REVIEW-2026-07-07.md`.
+- **Docs:** README, `docs/ARCHITECTURE.md`, `docs/CODE-REVIEW.md` → `docs/archive/`, `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`.
 - **Sound:** none; proven by render hashes against a clean worktree.

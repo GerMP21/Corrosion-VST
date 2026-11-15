@@ -9,4 +9,4 @@
 ## 2. Presets and close-out
 
 - [x] 2.1 Regenerate the factory presets with `cargo run --bin seed_presets`. Verify only `sync_rate` changed (0.25 → 0.0, with Hanging Chain Echo still at 0.5), and that `tests/preset_roundtrip.rs` and `preset_levels_are_sane` pass.
-- [x] 2.2 Mark H3 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`, noting that its GUI part is in H5. Run fmt and clippy, and verify both are clean.
+- [x] 2.2 Mark H3 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, noting that its GUI part is in H5. Run fmt and clippy, and verify both are clean.

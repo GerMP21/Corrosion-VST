@@ -12,4 +12,4 @@
 
 ## 3. Docs and close-out
 
-- [x] 3.1 Document the prune rule in `docs/ARCHITECTURE.md`'s resonator model section. Mark H11 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`, noting that the band fade from `resolve-exciter-tradeoffs` covered the aliasing half. Run fmt, clippy and the full suite, and verify all are green.
+- [x] 3.1 Document the prune rule in `docs/ARCHITECTURE.md`'s resonator model section. Mark H11 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, noting that the band fade from `resolve-exciter-tradeoffs` covered the aliasing half. Run fmt, clippy and the full suite, and verify all are green.

@@ -26,4 +26,4 @@ Every MIDI note-on runs inside `process()` and rebuilds the voice's modal resona
 - Code: `src/dsp/resonators/core.rs` and the per-object generators in `src/dsp/resonators/*.rs` (generate into a caller-provided buffer); `src/dsp/profile.rs` (`ModalModeSpec::damaged()` returns a fixed-size result); `src/dsp/interaction.rs` (preallocated coefficients); `src/voice/mod.rs` (in-place rebuild); `src/lib.rs` (`reset()`).
 - Memory: each voice reserves its worst-case mode capacity up front (a few KB per voice).
 - Tests: `tests/no_alloc.rs` rewritten to cover note-on paths; a mode-equivalence test guards against sound changes.
-- Docs: README / `docs/ARCHITECTURE.md` "No heap allocation" claims become accurate; `FABLE-CODE-REVIEW-2026-07-07.md` C3 status.
+- Docs: README / `docs/ARCHITECTURE.md` "No heap allocation" claims become accurate; `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` C3 status.

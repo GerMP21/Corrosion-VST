@@ -12,4 +12,4 @@
 
 ## 3. Close-out
 
-- [x] 3.1 Mark H2 FIXED in `FABLE-CODE-REVIEW-2026-07-07.md`. Run `cargo fmt --check`, clippy with `-D warnings`, and the full test suite (debug), and verify all are green.
+- [x] 3.1 Mark H2 FIXED in `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`. Run `cargo fmt --check`, clippy with `-D warnings`, and the full test suite (debug), and verify all are green.
