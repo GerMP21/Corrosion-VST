@@ -1381,7 +1381,7 @@ impl Corrosion {
 impl Plugin for Corrosion {
     // Plugin metadata constants
     const NAME: &'static str = "Corrosion";
-    const VENDOR: &'static str = "Synaptech Solutions";
+    const VENDOR: &'static str = "Germán Martínez";
     const URL: &'static str = "";
     const EMAIL: &'static str = "";
     const VERSION: &'static str = env!("CARGO_PKG_VERSION");
@@ -1551,12 +1551,13 @@ mod tests {
     use nih_plug::prelude::NoteEvent;
     use std::sync::Arc;
 
-    /// Hosts show Synaptech Solutions as the vendor. The VST3 class ID keeps
-    /// its old bytes: changing it would orphan the plugin in saved projects.
+    /// Hosts show Germán Martínez as the vendor (Synaptech Solutions before
+    /// 2026-11-16). The VST3 class ID keeps its old bytes: changing it would
+    /// orphan the plugin in saved projects.
     #[test]
-    fn plugin_vendor_is_synaptech_solutions() {
+    fn plugin_vendor_is_german_martinez() {
         use nih_plug::prelude::{Plugin, Vst3Plugin};
-        assert_eq!(Corrosion::VENDOR, "Synaptech Solutions");
+        assert_eq!(Corrosion::VENDOR, "Germán Martínez");
         assert_eq!(&Corrosion::VST3_CLASS_ID, b"CorrosionAudio01");
     }
 
