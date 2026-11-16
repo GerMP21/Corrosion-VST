@@ -38,7 +38,7 @@ This change builds the guide's machinery and skeleton. The prose is written in `
   - an internal link is broken;
   - a parameter has no Spanish text.
 - **Help text moves out of the GUI-only module.** `help_for` and the editor's control tables move to a feature-free module, so the exporter and its tests run in the CI lane. The editor behaves the same.
-- **CI** gets a `guide` job (Node: check and build). Cloudflare's build script also builds the guide.
+- **CI** gets a `guide` job (Node: check and build). The deploy build script also builds the guide.
 
 ## Capabilities
 
@@ -53,7 +53,7 @@ None. The ⓘ tooltips (`editor-controls`) keep their texts and behaviour; only 
 
 - New `web/guide/` (Astro Starlight project, `package.json` and lock with exact versions, content, components, data, clips).
 - New Rust binaries `export_guide_data` and `render_guide_clips` in `src/bin/`, and a feature-free module for the help texts and control tables (moved out of `src/gui/editor.rs`).
-- `web/scripts/build.sh` and `cloudflare-build.sh` build the guide (Node is in Cloudflare's build image).
+- `web/scripts/build.sh` and the deploy build script build the guide (Node is in the host's build image).
 - `.github/workflows/ci.yml` gets a `guide` job; the Rust drift and coverage tests run in the existing CI lane.
 - Repository size grows by the committed clips (estimated 10–15 MB of Opus, see design).
 - A dev tool for regenerating clips: `opusenc` (opus-tools). It is not needed by CI or the deploy.

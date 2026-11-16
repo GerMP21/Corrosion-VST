@@ -14,7 +14,7 @@ The cost on native: 16 voices at Render use about 36 % of one core. WebAssembly 
 - The real engine and the real editor, compiled from the same sources as the plugin.
 - Audio in an AudioWorklet, never on the main thread.
 - Every parameter, preset, kit and editor feature, plus Web MIDI, the computer keyboard, a tempo, session autosave and user presets.
-- Free public hosting on Cloudflare Workers, deployed from `main`.
+- Free public static hosting, deployed from `main`.
 - No change to the native plugins' sound or binaries.
 
 **Non-Goals:**
@@ -74,13 +74,13 @@ Plain JS, no framework: a start button (AudioContext needs a gesture), Web MIDI 
 
 The first spike task measures the engine's cost per 128-frame block in Chrome and Firefox, at each quality mode and 1, 4, 8 and 16 voices. Its numbers set the web defaults (quality, voice cap). If 16 voices at Normal don't fit, the web build lowers the voice cap; the plugin doesn't change. The page shows the worklet's load and warns above about 80 %.
 
-### 7. Hosting: Cloudflare Workers with static assets
+### 7. Hosting: static assets
 
-A Worker serves the built files (`wrangler.toml` with an `[assets]` directory), with long cache headers on hashed wasm and JS files and `application/wasm` content type. No server code beyond static serving.
+The host serves the built files, with long cache headers on hashed wasm and JS files and `application/wasm` content type. No server code beyond static serving.
 
 **Build location (open question, decided in task 5.1):**
-- **A.** Cloudflare's Git integration (Workers Builds) runs the build. It may lack `rustup` and the wasm target; installing them each build is slow.
-- **B.** GitHub Actions builds the wasm on `main` and deploys with `wrangler deploy` (needs a Cloudflare API token as a repository secret). Preview deploys on PRs are possible.
+- **A.** The host's Git integration runs the build. It may lack `rustup` and the wasm target; installing them each build is slow.
+- **B.** GitHub Actions builds the wasm on `main` and deploys to the host (needs an API token as a repository secret). Preview deploys on PRs are possible.
 
 B is the likely choice: the toolchain is already in CI, and the headless check runs before the deploy.
 
@@ -90,12 +90,12 @@ B is the likely choice: the toolchain is already in CI, and the headless check r
 - **[NIH-plug patch]** Maintaining a patch on a dependency. → Keep it to the event-loop stub; document it; consider upstreaming.
 - **[Two parameter copies]** The editor's mirror and the engine's copy can disagree after a lost message. → Messages are ordered and reliable within a page; state loads send the full state, not deltas.
 - **[Browser support]** No Web MIDI in Safari; WebGL2 required. → Feature detection with clear messages; the keyboards always work.
-- **[Bundle size]** Two wasm files with egui and the factory bank. → `opt-level = "s"` or `z` for the editor, `wasm-opt`, compression by Cloudflare. Measure and record.
+- **[Bundle size]** Two wasm files with egui and the factory bank. → `opt-level = "s"` or `z` for the editor, `wasm-opt`, compression by the host. Measure and record.
 - **[Sound mismatch]** gnu vs browser math libraries differ, so outputs won't be bit-identical. → Compare with a level and spectrum tolerance against the offline renderer.
 
 ## Open Questions
 
-- ~~Build in Cloudflare (A) or GitHub Actions (B)?~~ A, Cloudflare Workers Builds (task 5.1).
+- ~~Build on the host (A) or GitHub Actions (B)?~~ A, the host's build (task 5.1).
 - ~~Web voice cap and default quality~~: 16 voices, each preset's quality (task 1.4).
 - The public URL: a domain of the maintainer's own (task 5.1); which hostname is still open.
 
@@ -195,20 +195,19 @@ SIMD (`+simd128`, autovectorized only) saves 5–10 % on the heavy presets; the 
 
 ### 5.1 Build and hosting (decision and As built)
 
-**Decision (maintainer, 2026-11-12):** Cloudflare Workers Builds compiles the app (option A, not GitHub Actions), and the site gets a domain of the maintainer's own.
-- `web/scripts/cloudflare-build.sh` is the build command. Cloudflare's image has no Rust: it installs a minimal rustup toolchain and the wasm32 target when missing, and the prebuilt `wasm-bindgen` CLI at the version `web/Cargo.lock` pins (a GitHub release download, not `cargo install`), into `web/.tools`. Then `scripts/build.sh`. Checked here with `wasm-bindgen` removed: it downloaded 0.2.130 and built; smoke and feature checks pass on the result. Not run on Cloudflare's own image yet.
-- Workers Builds settings: root directory `web`, build command `bash scripts/cloudflare-build.sh`, deploy command `npx wrangler deploy`.
-- `web/wrangler.toml` serves `dist` as static assets; `www/_headers` sets a one-hour revalidating cache (file names aren't hashed) and `nosniff`. The custom domain is `preview.corrosion-vst.org` (maintainer, 2026-11-12; it replaced `corrosion.synaptech-solutions.com` the same day). First deploy from `main` (4d35bc5) to the `corrosion-vst` Worker; `smoke.cjs` passes against https://preview.corrosion-vst.org (strip RMS 0.31, key 0.34, next preset 0.48, no console errors). The edge certificate took about 20 minutes after DNS resolved. *Later (`add-site-shell`):* the app moved to `https://corrosion-vst.org/play/` (the build copies `www/` under `dist/play/`), `preview.` redirects there, `_headers` moved to `web/site/` for the whole site, and `routes` moved out of `[assets]`, where wrangler had been ignoring it (the preview domain worked because it was added in the dashboard).
-- Trade-off accepted with this choice: Cloudflare deploys without our browser checks; CI runs them (task 5.3).
+**Decision (maintainer, 2026-11-12):** The host's build compiles the app (option A, not GitHub Actions), and the site gets a domain of the maintainer's own.
+- A build script in `web/scripts/` is the build command. The host's image has no Rust: it installs a minimal rustup toolchain and the wasm32 target when missing, and the prebuilt `wasm-bindgen` CLI at the version `web/Cargo.lock` pins (a GitHub release download, not `cargo install`), into `web/.tools`. Then `scripts/build.sh`. Checked here with `wasm-bindgen` removed: it downloaded 0.2.130 and built; smoke and feature checks pass on the result. Not run on the host's own image yet.
+- The host serves `dist` as static assets; `www/_headers` sets a one-hour revalidating cache (file names aren't hashed) and `nosniff`. The domain is `preview.corrosion-vst.org` (maintainer, 2026-11-12). First deploy from `main` (4d35bc5); `smoke.cjs` passes against https://preview.corrosion-vst.org (strip RMS 0.31, key 0.34, next preset 0.48, no console errors). *Later (`add-site-shell`):* the app moved to `https://corrosion-vst.org/play/` (the build copies `www/` under `dist/play/`), `preview.` redirects there, and `_headers` moved to `web/site/` for the whole site.
+- Trade-off accepted with this choice: the host deploys without our browser checks; CI runs them (task 5.3).
 - Bundle sizes (gzip, no `wasm-opt`): editor wasm 1.58 MB (5.0 MB raw), engine 197 KB (611 KB raw), JS 17 KB.
 
 ### 5.3, 5.4, 5.6 CI, sound check, native unchanged (As built)
 
-- CI's `web` job (also on pushes to `web`): fmt, clippy native and wasm, the engine, bridge and real-time tests, `cloudflare-build.sh`, then the smoke and feature checks in headless Chromium.
+- CI's `web` job (also on pushes to `web`): fmt, clippy native and wasm, the engine, bridge and real-time tests, the deploy build script, then the smoke and feature checks in headless Chromium.
 - **Found here:** CI runs Rust 1.100, whose clippy adds `needless_range_loop` cases in old plugin code (`presets/factory/measure.rs`, `gui_notes.rs`) and `chunks_exact_to_as_chunks`. Fixed with the same summation order (bit-identical). The CLAUDE.md minimum stays 1.99.
 - 5.4: `loaded_presets_sound_like_their_offline_render`: one preset per factory folder, drum kits included, within 1 dB RMS and 2 % of a rough spectral centroid.
 - 5.6: every factory preset (214) rendered with `render_presets` (folder by folder, gnu) on `f131388` (before the web work) and on this branch: all 214 WAVs are byte-identical. The plugin's suite passes (515 tests).
 
 **Decision (maintainer, 2026-11-12, task 1.4): the web keeps 16 voices and each preset's own quality.** The load warning (task 4.6) covers the heavy end.
 
-**Close-out (2026-11-14, task 6.2), on `b214828`:** `cargo fmt --check`, clippy `-D warnings` (CI lane) and `cargo test --workspace --no-default-features` pass. So do the GUI lane (545 passed, 35 ignored), `no_alloc` (12 passed) and `cargo doc --no-deps --no-default-features` (0 warnings). The CI `web` job (fmt, clippy native and wasm, engine and bridge tests, the Cloudflare build script, browser checks) is green on the same commit.
+**Close-out (2026-11-14, task 6.2), on `b214828`:** `cargo fmt --check`, clippy `-D warnings` (CI lane) and `cargo test --workspace --no-default-features` pass. So do the GUI lane (545 passed, 35 ignored), `no_alloc` (12 passed) and `cargo doc --no-deps --no-default-features` (0 warnings). The CI `web` job (fmt, clippy native and wasm, engine and bridge tests, the deploy build script, browser checks) is green on the same commit.

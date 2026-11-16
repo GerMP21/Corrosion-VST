@@ -16,7 +16,7 @@ Trying Corrosion today means downloading a zip, finding the plugin folder, clear
 - The editor and the engine run as two instances that talk through messages:
   - parameters, notes, the kit and the state go from the editor to the engine;
   - the diode meter goes from the engine to the editor.
-- A free public site on Cloudflare Workers, connected to the GitHub repository and redeployed from `main`.
+- A free public static site, connected to the GitHub repository and redeployed from `main`.
 - A headless browser check in CI: the page loads, plays a note, and the output is not silent.
 - The plugin builds (VST3, CLAP) and their behaviour don't change. Whatever the web build needs from NIH-plug is isolated behind a build target or feature, so native builds stay byte-for-byte as today.
 
@@ -38,7 +38,7 @@ Trying Corrosion today means downloading a zip, finding the plugin folder, clear
 - **Build:**
   - the `wasm32-unknown-unknown` target and a wasm bundler (e.g. `wasm-pack`);
   - static assets (HTML, JS, the AudioWorklet processor);
-  - Cloudflare Workers config (`wrangler`).
-- **CI and deploy:** the web build in CI, a headless Chromium check, and the Cloudflare Workers project connected to the repository.
+  - Hosting config.
+- **CI and deploy:** the web build in CI, a headless Chromium check, and the hosting project connected to the repository.
 - **Docs:** README (link to the web app, its limits), `docs/ARCHITECTURE.md` (the web host and the bridge).
 - **License:** the GPLv3 applies to the web build. The page links the source.
