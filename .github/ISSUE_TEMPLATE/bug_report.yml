@@ -1,0 +1,112 @@
+name: Bug report
+description: Report a confirmed, reproducible bug in the plugin or the web app.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in every required field: reports without enough information to reproduce the problem may be closed.
+
+        This form is for **confirmed, reproducible bugs**. Questions, ideas, sound-design feedback ("this preset sounds harsh") and DSP review belong in [Discussions](https://github.com/GerMP21/Corrosion-VST/discussions).
+
+        Corrosion is maintained in limited time, so replies may take a while. See the [contributing guidelines](https://github.com/GerMP21/Corrosion-VST/blob/main/CONTRIBUTING.md) for details.
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and pull requests, and this hasn't been reported yet.
+          required: true
+        - label: I checked the planned work (`docs/BACKLOG.md` and the open changes in `openspec/changes/`) and the [Troubleshooting page of the Wiki](https://corrosion-vst.org/wiki/troubleshooting/).
+          required: true
+        - label: I can reproduce the bug with the steps below.
+          required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of bug
+      options:
+        - Crash or hang
+        - Wrong or broken sound (noise, silence, clicks, wrong pitch or level)
+        - Editor or interface
+        - Host integration (loading, automation, saved state, MIDI, latency)
+        - Presets (loading, saving, import or export)
+        - Web app
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Where does it happen?
+      multiple: true
+      options:
+        - VST3
+        - CLAP
+        - Web app
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly and concisely.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The minimal steps needed to trigger the bug, starting from the default patch or a named preset. Include the notes, velocities and controls you changed.
+      placeholder: |
+        1. Load the factory preset …
+        2. Set … to …
+        3. Play C3 at velocity 100 and release after 2 s
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Where and how you run Corrosion.
+      placeholder: |
+        - Corrosion version: nightly downloaded on YYYY-MM-DD, or commit
+        - OS and version:
+        - DAW and version, or browser and version:
+        - Sample rate and buffer size:
+        - Quality mode (Eco / Normal / Render):
+        - Preset:
+    validations:
+      required: true
+  - type: dropdown
+    id: regression
+    attributes:
+      label: Did it work before?
+      options:
+        - Yes, in an earlier build (say which under Additional context)
+        - No, it never worked
+        - I don't know
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and error messages
+      description: |
+        Paste any relevant output. It will be formatted as code automatically.
+        Plugin: set the `NIH_LOG` environment variable to a file path (for example `NIH_LOG=/tmp/corrosion.log`) before starting your DAW, and the plugin writes its log there. Web app: copy the browser console.
+      render: shell
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Files
+      description: Drag files here. For a sound bug, a short audio clip of what you hear and the `.corrosion-preset` file help most. A DAW project or screenshots help too.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Workarounds you've found, the earlier build that worked, or anything else that might help.

@@ -134,7 +134,7 @@ The factory bank lives under `presets/factory/`, in folders. The preset browser 
 
 Every factory preset is levelled so a held middle C sits at the same loudness (−17.7 dBFS RMS), with headroom so even a full-velocity note barely touches the limiter. Drum pads are levelled the same way, each held alone on its own key. Regenerate the bank with `cargo run --release --bin seed_presets`.
 
-> **Note: the factory presets are experimental.** Levels and the folder checks are measured, but the sound design isn't finished: some presets sound very similar to each other, and some don't sound like their name says. Help is welcome, both fixing the existing presets and adding new ones. Presets are built in code (`src/presets/factory/curated.rs` for the hand-made folders, `experimental.rs` and `drums.rs` for the others) and written to disk by the seeder; see [Factory presets in CLAUDE.md](CLAUDE.md#factory-presets) for the workflow, or open an issue describing a preset that misses its mark.
+> **Note: the factory presets are experimental.** Levels and the folder checks are measured, but the sound design isn't finished: some presets sound very similar to each other, and some don't sound like their name says. Help is welcome, both fixing the existing presets and adding new ones. Presets are built in code (`src/presets/factory/curated.rs` for the hand-made folders, `experimental.rs` and `drums.rs` for the others) and written to disk by the seeder; see [Rules the codebase lives by in CONTRIBUTING.md](CONTRIBUTING.md#rules-the-codebase-lives-by) for the workflow, or start a discussion about a preset that misses its mark.
 
 ### User Presets and Randomizer
 
@@ -366,7 +366,7 @@ GitHub Discussions are open for anything that isn't a concrete reproducible bug.
 - **DSP review**: algorithmic critique, modal-synthesis theory, oversampling/aliasing trade-offs.
 - **Architecture discussion**: module boundaries, voice/manager design, post-chain wiring.
 
-Issues are reserved for **confirmed, reproducible bugs** (steps to reproduce + expected vs. actual). Anything labeled `question`, `idea`, `discussion`, `DSP review`, or `parameter tuning` is more likely to find traction in Discussions than in the issue tracker.
+Issues are for two things: **confirmed, reproducible bugs**, through the [Bug report](https://github.com/GerMP21/Corrosion-VST/issues/new?template=bug_report.yml) form, and **concrete feature proposals**, through the [Feature proposal](https://github.com/GerMP21/Corrosion-VST/issues/new?template=feature_proposal.yml) form. Everything else, including any change that isn't small, starts in Discussions. To contribute code, presets or Wiki pages, see [CONTRIBUTING.md](CONTRIBUTING.md); everyone taking part follows the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 When you post, please distinguish between:
 
