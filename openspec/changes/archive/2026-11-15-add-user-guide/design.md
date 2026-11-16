@@ -2,11 +2,11 @@
 
 ## Context
 
-- `add-site-shell` gives the site its layout: one Worker with static assets, `dist/` assembled by `web/scripts/build.sh`, and shared tokens in `web/theme/tokens.css` checked against `src/gui/palette.rs`. This change depends on it.
+- `add-site-shell` gives the site its layout: one deploy of static assets, `dist/` assembled by `web/scripts/build.sh`, and shared tokens in `web/theme/tokens.css` checked against `src/gui/palette.rs`. This change depends on it.
 - The ⓘ help texts are `help_for(label)` in `src/gui/editor.rs`, keyed by display label. The model-dependent slot labels are in `ExciterControlSpec` and `ResonatorControlSpec` tables (`id`, `label`, `min`, `max`) in the same file. `editor.rs` is compiled only with `gui` or `web-gui`, so the CI lane (`--no-default-features`) can't reach them.
 - The plugin has 149 `#[id]` parameters. `corrosion::offline::render_preset` renders a preset through the full output path (H13). `presets::factory::TARGET_RMS` is 0.13.
 - The factory bank's pattern already solves "data generated from code, committed, drift-tested": `seed_presets` writes the files, and `generated_bank_equals_the_files_on_disk` fails on drift. The guide data and clips follow it.
-- The Cloudflare build image has Node (it runs `npx wrangler`). The container has Node 22.
+- The host's build image has Node. The container has Node 22.
 
 ## Goals / Non-Goals
 
@@ -106,7 +106,7 @@ Internal links are checked at build by the `starlight-links-validator` plugin.
 - **Tests (CI lane, no audio decoding).** `guide_clip_plan_covers_every_parameter` (every parameter planned or excluded), and `guide_clip_manifest_is_complete_and_audible`. The second checks that every planned clip is in the manifest and on disk, that its RMS is > −60 dBFS unless declared quiet, and that the fingerprint matches the plan.
 - **No asserted hashes.** Clips are rendered with the gnu toolchain, and hashes aren't portable.
 
-*Alternative:* rendering clips during the Cloudflare build. That needs a native release build of the crate plus an Opus encoder in the build image, adds minutes and moving parts to every deploy, and can produce different bytes per build. Committing them follows the preset bank's pattern.
+*Alternative:* rendering clips during the deploy build. That needs a native release build of the crate plus an Opus encoder in the build image, adds minutes and moving parts to every deploy, and can produce different bytes per build. Committing them follows the preset bank's pattern.
 
 ### 8. `<Clips>` component
 `<Clips param="rust" />` (or `set="exciters" item="Bow"`) renders small labelled buttons: Min, Mid and Max, or the item name. Each plays its file through one shared `<audio preload="none">`, so pages with many clips load nothing until clicked. Labels are translated, and the component is keyboard-accessible.
@@ -121,7 +121,7 @@ Internal links are checked at build by the `starlight-links-validator` plugin.
 - [Repository growth from clips]
   - Estimate: about 140 parameters × 3, plus about 25 comparison clips, 25 preset clips, 10 kit clips and 5 demos ≈ 470 clips × 3 s × 64 kbps ≈ 11 MB, rewritten on each sound change.
   - Mitigation: regenerate only for intended sound changes (like the golden fixture); 48 kbps if size matters (≈ 8.5 MB).
-  - Git LFS is avoided because Workers Builds would need LFS support.
+  - Git LFS is avoided because the deploy build would need LFS support.
   - Recorded in Measurements with the real size.
 - [Clips drift from the engine silently] → The fingerprint catches plan changes but not engine changes. CLAUDE.md gets a rule: a change that moves timbre engine-wide (the same trigger as reseeding presets) regenerates the clips, and the close-out says so.
 - [Default patch's long decay] (backlog item) → The base patch is chosen for clarity, not inherited blindly. It is confirmed by ear with the maintainer before the first full render.
@@ -178,7 +178,7 @@ No user-facing migration. The deploy adds `/wiki/`. Rollback is reverting the me
 
 ### Tasks 3.1–3.4 and 3.6: guide skeleton (2026-11-13)
 
-- **Versions** (exact pins, `package-lock.json`): `astro` 7.4.4, `@astrojs/starlight` 0.42.7, `starlight-links-validator` 0.27.0, `js-yaml` 4.3.2 (for `check.mjs`). The newest releases (astro 7.4.12, Starlight 0.43.0) came out the same day, so the pins are the latest at least two weeks old. Astro 7.4.4 needs **Node ≥ 22.23.4** (`engines`); CI and the Cloudflare build must provide it (task 5.1/5.2).
+- **Versions** (exact pins, `package-lock.json`): `astro` 7.4.4, `@astrojs/starlight` 0.42.7, `starlight-links-validator` 0.27.0, `js-yaml` 4.3.2 (for `check.mjs`). The newest releases (astro 7.4.12, Starlight 0.43.0) came out the same day, so the pins are the latest at least two weeks old. Astro 7.4.4 needs **Node ≥ 22.23.4** (`engines`); CI and the deploy build must provide it (task 5.1/5.2).
 - **Config:** `base: '/wiki'`, `outDir: '../dist/wiki'`, `trailingSlash: 'always'`, locales root `en` and `es`, Pagefind, `starlightLinksValidator({ errorOnLocalLinks: true })`. `customCss` imports `../theme/tokens.css` directly: Vite accepted the path outside the project root, so the copy fallback of Decision 2 isn't needed.
 - **Dark-only:** `ThemeProvider` is overridden with one that always sets `data-theme="dark"` before paint, and `ThemeSelect` with an empty component. Checked with Playwright under `colorScheme: 'light'`: the theme is dark, the body is CHARCOAL (`rgb(13, 13, 13)`), no switch is shown. `guide.css` maps Starlight's variables to the tokens and gives `h2` the editor's caps with tracking.
 - **Header:** `SocialIcons` is replaced by `SiteLinks` (Home → `/`, Play → `/play/`). The components' UI strings are in Starlight's `i18n` collection (`src/content/i18n/{en,es}.json`).
@@ -256,7 +256,7 @@ Each mutation was restored, and the guide tests pass.
 
 - `web/scripts/build.sh` runs `npm ci && npm run check && npm run build` in `web/guide/` after the app, so the guide lands in `dist/wiki/`. The `add-site-shell` placeholder (`web/site/wiki/index.html`) is gone: the guide replaces it.
 - **Fixed on the way:** the script ended with `ls -lR dist | head -40`, which under `set -o pipefail` exits 141 (SIGPIPE) once `dist` lists more than 40 lines, as it does with the guide. It now prints `du -sh dist/* | sort -h`.
-- `cloudflare-build.sh` installs the official Node 22.23.4 build into `web/.tools` when the image's Node is older than Astro 7.4.4 requires (comparator checked against 22.23.4, 22.23.3, 22.12.0, 23.1.0, 20.19.0 and 24.0.0; the download and extraction checked by hand). CI's `web` job runs the same script, so it covers this path whenever the runner's Node is older.
+- The deploy build script installs the official Node 22.23.4 build into `web/.tools` when the image's Node is older than Astro 7.4.4 requires (comparator checked against 22.23.4, 22.23.3, 22.12.0, 23.1.0, 20.19.0 and 24.0.0; the download and extraction checked by hand). CI's `web` job runs the same script, so it covers this path whenever the runner's Node is older.
 - **Local full build:** `bash web/scripts/build.sh` passes (10.5 s with Rust cached; the guide's part is about 6 s). `dist/` has 833 files; `dist/wiki/` is 26 MB, `dist/play/` 5.5 MB; no file over 5 MB (Workers limit 25 MiB per file, 20,000 files).
 - `site.cjs` gains guide checks: `/wiki/` and `/wiki/es/` return 200 with the guide's titles, are dark and have search; an unknown `/wiki/` path returns 404 with the guide's page. `site.cjs`, `smoke.cjs` and `features.cjs` pass against the full build.
 - **`ci.yml` `guide` job:** `actions/setup-node@v4` with Node 22.23.4 and the npm cache keyed on `web/guide/package-lock.json`, then `npm ci`, `npm run check`, `npm run build` (the build fails on a broken internal link). No Rust; the drift and clip tests run in `checks`.
@@ -279,6 +279,6 @@ Each mutation was restored, and the guide tests pass.
 - fmt clean; CI-lane clippy `-D warnings` clean; CI test lane 521 passed; GUI lane 516 passed (30 ignored); GUI-lane clippy the same 27 warnings as before.
 - `cargo doc --no-deps --no-default-features` had one new warning, an unresolved intra-doc link to `guide_files` in `src/guide/mod.rs` (since task 2.2); fixed, 0 warnings.
 - Guide check and build pass; `site.cjs`, `smoke.cjs` and `features.cjs` pass against the full local build.
-- **Not tested:** the Cloudflare deploy itself (the Node install path was run by hand, not in Workers Builds); the guide's look on Safari and Firefox (Chromium only).
+- **Not tested:** the deploy itself (the Node install path was run by hand, not on the host); the guide's look on Safari and Firefox (Chromium only).
 - **Open for the maintainer:** the review of `parameters.es.json` in `write-user-guide-content`.
 - **Moved to `docs/BACKLOG.md` (maintainer, 2026-11-13):** Metal Chain almost silent at Internal Rattle 0 (−62 dBFS); the clip stays declared quiet.
