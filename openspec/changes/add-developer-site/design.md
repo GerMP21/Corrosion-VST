@@ -61,7 +61,7 @@ Each page's front matter declares:
 - when a `sources:` path doesn't exist;
 - when a top-level entry under `src/` isn't covered by any page's `sources:`. Covered means the entry itself or any path under it.
 
-A `<Sources>` component renders the list at the foot of each page, linking every path to `<repository URL>/blob/main/<path>` (or `/tree/main/` for directories). The repository URL is one constant in `src/site.mjs`.
+A `<Sources>` component renders the list at the foot of each page, linking every path to `<repository URL>/blob/main/<path>` (or `/tree/main/` for directories). The repository URL is one constant in `src/site.mjs`: `https://github.com/GerMP21/Corrosion-VST` (maintainer, 2026-11-16; the site's other links point there too).
 
 *Alternative:* checking every inline `` `src/…` `` mention in the prose. It's noisier, and it makes every code span a contract. The front matter is the contract; inline mentions are left to review.
 
@@ -122,7 +122,3 @@ They don't name review findings or OpenSpec changes in the text. A short "Histor
 1. Merge to `main`: the site deploys with `/dev/`; nothing else moves.
 2. Add `devdocs` to the required status checks of the `dev` and `main` rulesets.
 3. Rollback: revert the merge; `/dev/` returns the site's 404 again.
-
-## Open Questions
-
-- **Which repository URL do the source links use?** `CONTRIBUTING.md` uses `GerMP21/Corrosion-VST`, while the home page and the web app link `Synaptech-Solutions-SAS/Corrosion-VST`. It's one constant (`src/site.mjs`), to be set before the first page is published.
