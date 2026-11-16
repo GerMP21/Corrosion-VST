@@ -122,7 +122,7 @@ To test new changes, refresh the worktree (`git -C /tmp/claude-0/shotwt checkout
 pkill -f REAPER/reaper; rm -f /tmp/claude-0/reaper-startup.log; (DISPLAY=:98 nohup /tmp/claude-0/reaper-dl/reaper_linux_x86_64/REAPER/reaper -nosplash -new > /tmp/claude-0/reaper.log 2>&1 &)
 ```
 
-After 10–20 seconds, `/tmp/claude-0/reaper-startup.log` should say `fx name CLAPi: Corrosion (Germán Martínez)`. If `fx index` is `-1`, REAPER didn't find the CLAP. Check `~/.clap/Corrosion.clap`, and delete REAPER's CLAP cache (the `reaper-clap-*.ini` file in `~/.config/REAPER/`) so it rescans.
+After 10–20 seconds, `/tmp/claude-0/reaper-startup.log` should say `fx name CLAPi: Corrosion (German Martinez)`. If `fx index` is `-1`, REAPER didn't find the CLAP. Check `~/.clap/Corrosion.clap`, and delete REAPER's CLAP cache (the `reaper-clap-*.ini` file in `~/.config/REAPER/`) so it rescans.
 
 Close the About window, put the plugin window at the top left, and take a screenshot:
 
