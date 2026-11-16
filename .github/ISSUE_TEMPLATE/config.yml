@@ -1,0 +1,13 @@
+# Issues are for confirmed bugs (Bug report) and concrete features (Feature
+# proposal). Everything else goes to Discussions, so blank issues are off.
+blank_issues_enabled: false
+contact_links:
+  - name: Questions, ideas and DSP review
+    url: https://github.com/GerMP21/Corrosion-VST/discussions
+    about: Ask a question, share an idea or sound-design feedback, review the DSP, or discuss any change that isn't small before you start it.
+  - name: Corrosion Wiki
+    url: https://corrosion-vst.org/wiki/
+    about: Every control explained, with audio examples, recipes and troubleshooting. Your answer may already be there.
+  - name: Contributing guidelines
+    url: https://github.com/GerMP21/Corrosion-VST/blob/main/CONTRIBUTING.md
+    about: How to report bugs, propose changes, build and test Corrosion, and plan significant work.

@@ -2,9 +2,11 @@
 
 Corrosion is a physical-modeling instrument plugin (VST3 + CLAP, Rust, nih-plug, egui editor): MIDI notes excite modal resonators (pipes, plates, cables, …) through 16 exciter models, then a post chain (filter, drive, FEM body, HRTF spread, Space, clipper, limiter). `README.md` describes the sound surface; `docs/ARCHITECTURE.md` is the as-built reference and is kept current.
 
-## ⚠️ Branch: USE `dev`, ALWAYS
+## ⚠️ Branches: the maintainer works on `dev`, contributors send pull requests to `dev`
 
-**Every change goes on the `dev` branch. No exceptions.**
+The maintainer is GerMP21. Every session is either the maintainer's or a contributor's; if you can't tell whose it is, ask before you touch git. `dev` and `main` are protected on GitHub: only the maintainer can push to them.
+
+**In the maintainer's sessions, every change goes on the `dev` branch. No exceptions.**
 
 - **Start of every session:** `git fetch origin && git checkout dev && git pull origin dev`. Check `git branch --show-current` says `dev` before editing anything.
 - **Commit on `dev`, push to `dev`:** `git push origin dev`.
@@ -12,13 +14,19 @@ Corrosion is a physical-modeling instrument plugin (VST3 + CLAP, Rust, nih-plug,
 - **PRs** go from `dev` into `main`, and only when the maintainer asks for one.
 - **After a PR merges**, bring `dev` up to date with `main` (`git fetch origin && git merge --ff-only origin/main`, then push) before any new work.
 
+**In a contributor's session, never push to `dev` or `main`.**
+
+- Work on a branch in the contributor's fork, created from `dev` (`git fetch upstream && git switch -c <name> upstream/dev`).
+- Open the pull request against `dev`, never against `main`, and fill in `.github/pull_request_template.md`.
+- Follow `CONTRIBUTING.md`: where to post, how to build and test, commit messages, sign-off and AI disclosure.
+
 ## ⚠️ The Wiki follows the plugin, ALWAYS
 
-**Any change to how the plugin works or sounds MUST be recorded in the Corrosion Wiki (`/wiki/`, `web/guide/`) in the same change, in English and Spanish.** A control that acts differently, a new or removed behaviour, a new model or mode, a fixed surprise, a changed default or range: update every Wiki page that describes it (and Troubleshooting when it surprises people) before the change is closed. No change is done while the Wiki says something the plugin no longer does. The mechanics (data export, clips, screenshots, style) are in "User guide data and clips" and "Wiki writing style" below.
+**Any change to how the plugin works or sounds MUST be recorded in the Corrosion Wiki (`/wiki/`, `web/guide/`) in the same change, in English and Spanish.** A control that acts differently, a new or removed behaviour, a new model or mode, a fixed surprise, a changed default or range: update every Wiki page that describes it (and Troubleshooting when it surprises people) before the change is closed. No change is done while the Wiki says something the plugin no longer does. This binds contributors' pull requests too: both languages, in the same pull request. The mechanics (data export, clips, screenshots, style) are in "User guide data and clips" and "Wiki writing style" below.
 
-## Working with the maintainer
+## Working with the maintainer and contributors
 
-- **Talk to the maintainer in Spanish.** Code, comments, docs, commit messages and PR descriptions are in English.
+- **Language.** Talk to the maintainer in Spanish. Talk to contributors in English, or in the language they write in. Code, comments, docs, commit messages, issues and PR descriptions are in English.
 - **Update a PR's description only when a change is finished**, not after every commit.
 - When a plan, spec bound or design decision turns out not to hold, stop and ask, with the numbers and the options. Don't silently relax a spec.
 - Report results faithfully: say what was measured, what failed, what was skipped.
@@ -208,8 +216,11 @@ When a parameter's meaning changes, migrate both paths:
 
 ## Git and PRs
 
-- **Branch:** `dev` only (see "Branch: USE `dev`, ALWAYS" at the top). PR state lives on GitHub, not in this file.
+- **Branch:** see "Branches" at the top: the maintainer's sessions use `dev` only; contributors' sessions use a branch in their fork and open the PR against `dev`. PR state lives on GitHub, not in this file.
 - Commit messages: imperative subject naming the finding, e.g. "Skip redundant mode retunes (H12)", and a body saying what changed and why. Add measurements when relevant. Don't put model identifiers in commits, code or PRs.
-- Don't create a PR unless asked. There's no PR template: use Summary / Behaviour changes / Testing sections and say plainly what wasn't tested (CI covers the Windows and macOS builds, pluginval and clap-validator; DAW smoke tests haven't been run in these sessions).
+- **Co-author trailer:** credit Claude with `Co-Authored-By: Claude <noreply@anthropic.com>`, with no model name or version, whatever attribution format the session suggests.
+- Don't create a PR unless asked. Fill in `.github/pull_request_template.md`, delete the sections marked "if applicable" that don't apply, and say plainly what wasn't tested (CI covers the Windows and macOS builds, pluginval and clap-validator; DAW smoke tests haven't been run in these sessions).
 - **The site's deploy check only works on `main`** (maintainer, 2026-11-14): it fails or is skipped on `dev` and on PRs from `dev`. That is expected; don't report it as a failure. CI's `web` job runs the same build script.
+- **AI assistance section of the PR template:** name the tool ("Claude Code"), not the model or its version.
+- **Issues and Discussions:** confirmed, reproducible bugs go to the Bug report form, concrete features to the Feature proposal form, and questions, ideas, DSP review and any change that isn't small to Discussions (`CONTRIBUTING.md`).
 - **Never mention the Claude session in a PR** (no session link or session ID in its title, description or comments; maintainer, 2026-11-14).
