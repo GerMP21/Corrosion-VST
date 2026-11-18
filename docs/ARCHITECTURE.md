@@ -22,6 +22,26 @@ The audio path is a strict per-sample loop inside the host `process()` callback
 (`src/lib.rs`). The exciter↔resonator interaction is per-sample by design; the
 global post chain is **also** per-sample today (see §9).
 
+At a glance (the detailed chain is in the diagram further down):
+
+```mermaid
+flowchart TB
+    IN["MIDI notes<br/>host or editor keyboard"]
+    VM["VoiceManager<br/>16 voices"]
+    EXC["Exciter<br/>1 of 16 models"]
+    RES["Modal resonator<br/>1 of 9 objects"]
+    MIX["Voice mix<br/>DC blocker, master drive"]
+    POST["Post chain<br/>filter, drive, body, spread, space"]
+    CLIP["Diode clipper"]
+    LIM["Output gain and limiter"]
+    OUT["Stereo output"]
+
+    IN --> VM --> EXC
+    EXC -->|"force"| RES
+    RES -->|"motion"| EXC
+    RES --> MIX --> POST --> CLIP --> LIM --> OUT
+```
+
 Below the host API the path is one function, `Corrosion::process_block`:
 `begin_block` (per-buffer setup: drive and output-gain smoother targets,
 limiter configuration, post-chain parameters with macro biases, live controls
@@ -47,6 +67,70 @@ RMS as DC and a felt mallet's largest 20 ms mean drops 16.6 dB. It is rated
 in `initialize` and `begin_block` and cleared by `reset()` and the panic
 clear. DC that later stages create (the asymmetric drives and the diode
 curve) is theirs to handle.
+
+The flowchart below is the same chain at a glance (GitHub renders it); the
+text diagram after it has the same stages, for reading in a terminal.
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "JetBrains Mono, ui-monospace, monospace", "fontSize": "12px", "primaryColor": "#EDEAE3", "primaryTextColor": "#111111", "primaryBorderColor": "#111111", "lineColor": "#111111", "clusterBkg": "transparent", "clusterBorder": "#111111", "edgeLabelBackground": "#F7F5F0"}}}%%
+flowchart TD
+    midi(["MIDI Note Event"]):::io
+    vm["<b>VoiceManager</b> (MAX_VOICES = 16)<br/>16 fixed voices · steal tails, then held notes ≥ 100 ms<br/>only is_rendering() voices are summed"]:::accent
+    midi --> vm
+    vm -->|per active voice| env
+
+    subgraph perVoice["Per Active Voice"]
+        env["<b>Force envelope</b><br/>AR · ADSR · MSEG"]:::plain
+        exc["<b>Exciter (1/16)</b><br/>family dispatch"]:::accent
+        bus["<b>Interaction Bus</b><br/>spatial coefficients"]:::plain
+        res["<b>ModalResonator</b><br/>N second-order modes<br/>+ per-mode strike coeffs"]:::plain
+        shape["<b>rattle (damage)</b><br/>+ velocity highpass boost · clamp / denormal"]:::plain
+        env --> exc
+        exc <-->|"force / displacement / velocity"| bus
+        bus --> res
+        res --> shape
+    end
+
+    sum["<b>Σ voices</b><br/>sum active voices"]:::plain
+    dc["<b>StereoDcBlocker</b><br/>10 Hz 2nd-order Butterworth · L &amp; R"]:::plain
+    drive["<b>apply_drive()</b><br/>master / exciter drive · L &amp; R"]:::accent
+    shape --> sum
+    sum --> dc
+    dc --> drive
+    drive --> filt
+
+    subgraph post["PostProcessingChain"]
+        filt["<b>WDF filter</b><br/>per channel"]:::plain
+        lorenz["<b>Lorenz drive</b><br/>per channel"]:::plain
+        body["<b>FEM body</b><br/>on (L+R)/2 · × BODY / 5"]:::plain
+        add(("#43;")):::plain
+        spread["<b>HRTF spread</b>"]:::plain
+        space["<b>Space</b><br/>Factory | Spring | Echo"]:::plain
+        quality{"Quality mode?"}:::accent
+        clip["<b>OversampledClipper (per ch.)</b><br/>diode stage"]:::accent
+        filt --> lorenz
+        lorenz --> add
+        lorenz -->|"mono sum"| body
+        body -->|"added to L and R"| add
+        add --> spread
+        spread --> space
+        space --> clip
+        quality -.->|"Eco 1× · Normal 4× · High 8× · Render 16×"| clip
+    end
+
+    out_gain["<b>× output_gain → Hard clamp or Lookahead limiter</b><br/>both at ±Analog Ceiling (default 0.9661 ≈ −0.3 dBFS)"]:::accent
+    out(["Stereo Output"]):::io
+    clip --> out_gain
+    out_gain --> out
+
+    classDef io fill:#FEF3C7,stroke:#D97706,stroke-width:1.5px,color:#D97706,font-weight:bold
+    classDef accent fill:#FEF3C7,stroke:#D97706,stroke-width:1.5px,color:#111111
+    classDef plain fill:#EDEAE3,stroke:#111111,stroke-width:1px,color:#111111
+    style perVoice fill:none,stroke:#111111,stroke-width:1px,stroke-dasharray:5 3,color:#555555
+    style post fill:none,stroke:#D97706,stroke-width:1.5px,stroke-dasharray:5 3,color:#D97706
+    linkStyle 3 stroke:#D97706,color:#D97706
+    linkStyle 17 stroke:#D97706,stroke-dasharray:3 2
+```
 
 ```text
 MIDI Note Event
