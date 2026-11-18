@@ -24,6 +24,20 @@ The maintainer is GerMP21. Every session is either the maintainer's or a contrib
 
 **Any change to how the plugin works or sounds MUST be recorded in the Corrosion Wiki (`/wiki/`, `web/guide/`) in the same change, in English and Spanish.** A control that acts differently, a new or removed behaviour, a new model or mode, a fixed surprise, a changed default or range: update every Wiki page that describes it (and Troubleshooting when it surprises people) before the change is closed. No change is done while the Wiki says something the plugin no longer does. This binds contributors' pull requests too: both languages, in the same pull request. The mechanics (data export, clips, screenshots, style) are in "User guide data and clips" and "Wiki writing style" below.
 
+## Third-party notices
+
+`THIRD-PARTY-NOTICES.md` holds the notices for everything in Corrosion that someone else wrote. The release zips carry it next to `LICENSE`, and the site's footers link it.
+
+- **Sections 1–3 are written by hand:**
+  - material in the repository: the OpenSpec skills and commands in `.claude/` and `.opencode/`, `vendor/nih_log`, and the NIH-plug patch;
+  - the npm code the site ships;
+  - trademarks.
+
+  New third-party material that isn't a crate gets an entry there in the same change: vendored or copied code, generated files such as skills, fonts, data, and site code.
+- **Section 4 (Rust crates) is generated** by `python3 scripts/third_party_notices.py` from `Cargo.lock` and `web/Cargo.lock`. It covers every target the bundles and the web app ship. Rerun it after any lockfile change, `cargo update` included, and commit the result.
+  - CI's `web` job and `verify-local.sh` run it with `--check`.
+  - It fails on a license outside its GPLv3-compatible allowlist (`ALLOWED`). Stop and ask the maintainer then; don't widen the list yourself.
+
 ## Working with the maintainer and contributors
 
 - **Language.** Talk to the maintainer in Spanish. Talk to contributors in English, or in the language they write in. Code, comments, docs, commit messages, issues and PR descriptions are in English.
@@ -174,6 +188,7 @@ CI (`.github/workflows/ci.yml`) uses `x86_64-unknown-linux-musl` with the latest
 | musl parity | `CARGO_BUILD_TARGET=x86_64-unknown-linux-musl cargo test --workspace --no-default-features` (`rustup target add x86_64-unknown-linux-musl`) |
 | Real-time safety | `cargo test --no-default-features --test no_alloc` (debug only; the checking allocator doesn't exist in release) |
 | Docs | `cargo doc --no-deps --no-default-features` (should add no warnings) |
+| Third-party notices | `python3 scripts/third_party_notices.py --check` (after a dependency change, run it without `--check` and commit `THIRD-PARTY-NOTICES.md`) |
 | Full local lane | `./scripts/verify-local.sh` |
 
 - `[profile.test]` uses `opt-level = 1`, so debug test runs aren't painfully slow.

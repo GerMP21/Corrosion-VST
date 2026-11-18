@@ -19,7 +19,7 @@ The whole plugin, the same engine and editor, also runs in a web page: no downlo
 ### Install
 
 1. Download the zip for your platform and format from the [`nightly` pre-release](../../releases/tag/nightly). It is rebuilt by every green CI run on `main`: tested on its platform and checked with clap-validator and pluginval.
-2. Unzip it and move the `Corrosion.vst3` or `Corrosion.clap` bundle into your plugin folder (the zip also holds the license):
+2. Unzip it and move the `Corrosion.vst3` or `Corrosion.clap` bundle into your plugin folder (the zip also holds the license and the third-party notices):
 
    | Platform | VST3 | CLAP |
    |---|---|---|
@@ -381,3 +381,5 @@ When you post, please distinguish between:
 Copyright (C) 2026 The Corrosion Synthesizer Authors.
 
 Corrosion is free software, released under the [GNU General Public License v3](LICENSE) or (at your option) any later version. It comes with no warranty; see the license for details.
+
+It includes and links third-party code under its own licenses: the OpenSpec agent skills and commands, a vendored nih_log, the Rust crates in the plugin and the web app, and the site's npm packages. Their notices are in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

@@ -98,7 +98,7 @@ These are the planned pages, in sidebar order; file names are the wiki names. Ex
 | Quality | `Real-Time-Safety` | `tests/no_alloc.rs` |
 | | `Testing` | `tests/*`, `src/offline/*`, `src/bin/{render,render_presets}.rs`, the WAV scripts |
 | | `Benchmarks-and-Performance` | `benches/performance.rs`, `scripts/bench_ratios.py`, `web/scripts/bench-*.mjs` |
-| | `Building-and-Bundling` | `scripts/{bundle,check_bundle,validate-plugins,verify-local}.sh`, `docs/REAPER_TESTING.md` |
+| | `Building-and-Bundling` | `scripts/{bundle,check_bundle,validate-plugins,verify-local}.sh`, `scripts/third_party_notices.py` and `THIRD-PARTY-NOTICES.md`, `docs/REAPER_TESTING.md` |
 | | `CI-and-Releases` | `.github/workflows/ci.yml`, `.github/workflows/wiki.yml` |
 | Process | `Contributing-and-Keeping-This-Wiki-Current` | `CONTRIBUTING.md`, `openspec/`, `CLAUDE.md` |
 | | `Glossary` | none |

@@ -114,6 +114,7 @@ If the pull request implements several planned changes or review findings, give 
 - [ ] Each new package is the real, maintained one from the expected publisher
 - [ ] It doesn't allocate or lock on the audio thread, if it's used there
 - [ ] Lockfile changes are included (`Cargo.lock`, `web/Cargo.lock`, `package-lock.json`)
+- [ ] `THIRD-PARTY-NOTICES.md` is regenerated (`python3 scripts/third_party_notices.py`), and third-party material that isn't a crate has an entry there
 
 ## Not in this pull request
 

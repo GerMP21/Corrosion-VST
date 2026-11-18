@@ -48,6 +48,7 @@ const check = (ok, what) => {
   const footer = await page.locator("footer").innerText().catch(() => "");
   check(/GPL/i.test(footer), "footer states the GPLv3 license");
   check((await page.locator('footer a[href*="github.com"]').count()) >= 1, "footer links the source");
+  check((await page.locator('footer a[href$="THIRD-PARTY-NOTICES.md"]').count()) === 1, "footer links the third-party notices");
   check((await page.locator('footer #build').count()) === 1, "footer shows the build commit");
   // Cloudflare Web Analytics' cookie-free beacon is injected by the host on
   // the live site and is allowed (maintainer's choice); nothing else is.

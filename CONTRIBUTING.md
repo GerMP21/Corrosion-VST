@@ -165,6 +165,7 @@ Windows with MSVC.
 | Editor (GUI) tests | `cargo test --lib` |
 | Real-time safety | `cargo test --no-default-features --test no_alloc` (debug builds only: the checking allocator doesn't exist in release) |
 | Docs | `cargo doc --no-deps --no-default-features` (should add no warnings) |
+| Third-party notices | `python3 scripts/third_party_notices.py --check` (after a dependency change, run it without `--check` and commit `THIRD-PARTY-NOTICES.md`) |
 | Format, lint, tests, editor tests, a render check and the Linux bundle, in one go (Linux) | `./scripts/verify-local.sh` |
 | Wiki | `cd web/guide && npm ci && npm run check -- --complete && npm run build` |
 | Web app | `web/scripts/build.sh` (writes `web/dist`) |
@@ -312,6 +313,14 @@ Add new dependencies only when they're genuinely needed. For each one:
 - Make sure it doesn't allocate or lock on the audio thread if it's used there.
 - Commit the lockfile changes along with it (`Cargo.lock`, `web/Cargo.lock` or
   `package-lock.json`).
+- Regenerate the third-party notices after any change to `Cargo.lock` or
+  `web/Cargo.lock`, `cargo update` included: run
+  `python3 scripts/third_party_notices.py` and commit `THIRD-PARTY-NOTICES.md`.
+  CI fails while it's stale, and also when a crate's license isn't on the
+  script's GPLv3-compatible allowlist.
+- Third-party material that isn't a crate gets a hand-written entry in
+  `THIRD-PARTY-NOTICES.md`. That covers vendored or copied code, generated
+  files such as agent skills, fonts, data, and npm code the site ships.
 
 ### Breaking changes
 
