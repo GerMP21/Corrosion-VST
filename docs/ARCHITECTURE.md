@@ -22,6 +22,26 @@ The audio path is a strict per-sample loop inside the host `process()` callback
 (`src/lib.rs`). The exciter↔resonator interaction is per-sample by design; the
 global post chain is **also** per-sample today (see §9).
 
+At a glance (the detailed chain is in the diagram further down):
+
+```mermaid
+flowchart TB
+    IN["MIDI notes<br/>host or editor keyboard"]
+    VM["VoiceManager<br/>16 voices"]
+    EXC["Exciter<br/>1 of 16 models"]
+    RES["Modal resonator<br/>1 of 9 objects"]
+    MIX["Voice mix<br/>DC blocker, master drive"]
+    POST["Post chain<br/>filter, drive, body, spread, space"]
+    CLIP["Diode clipper"]
+    LIM["Output gain and limiter"]
+    OUT["Stereo output"]
+
+    IN --> VM --> EXC
+    EXC -->|"force"| RES
+    RES -->|"motion"| EXC
+    RES --> MIX --> POST --> CLIP --> LIM --> OUT
+```
+
 Below the host API the path is one function, `Corrosion::process_block`:
 `begin_block` (per-buffer setup: drive and output-gain smoother targets,
 limiter configuration, post-chain parameters with macro biases, live controls
