@@ -13,6 +13,9 @@ cd "${PROJECT_DIR}"
 echo "==> rustfmt"
 cargo fmt --check
 
+echo "==> third-party notices are current"
+python3 scripts/third_party_notices.py --check
+
 echo "==> clippy (workspace, no default features)"
 cargo clippy --workspace --all-targets --no-default-features -- -D warnings
 
