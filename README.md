@@ -392,7 +392,7 @@ When you post, please distinguish between:
 
 ## License
 
-Copyright (C) 2026 The Corrosion Synthesizer Authors.
+Copyright (C) 2026 German Martinez and the Corrosion contributors. Each contributor keeps the copyright of their own contributions.
 
 Corrosion is free software, released under the [GNU General Public License v3](LICENSE) or (at your option) any later version. It comes with no warranty; see the license for details.
 
