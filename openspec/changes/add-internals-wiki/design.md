@@ -187,3 +187,19 @@ The old change directory is deleted in this change's first commit, with a line i
   - An unchanged re-run says "the wiki already matches" and makes no commit.
   - Deleting `_Footer.md` from the source removes it from the wiki on the next publish.
   - Not checked here: `actionlint` (not installed), and the real push with the job's token (first run on `main`).
+- **As built: how the pages were written.** Seven parallel writers each took a page group, with a shared brief (format, voice, a page list for cross-links, verify with this test). Each read its code and checked every claim against it. Glossary, Home and the sidebar were written last, from the terms the writers reported.
+  - `wiki_links_resolve` was ignored too while the groups landed one by one, and all three ignores were removed in task 9.1.
+  - One test fix came out of the writing: anchors keep an inline code span's text, as GitHub's do.
+- **Result:**
+  - 36 pages plus `_Sidebar` and `_Footer`: about 87,000 words and 57 Mermaid diagrams.
+  - All 9 checks pass with none ignored; the test runs in 0.01 s.
+  - Every non-test `src/` file and every top-level item of `web/`, `scripts/`, `tests/`, `benches/` and `.github/workflows/` is named.
+  - Not checked: the pages as rendered by GitHub (Mermaid included). That happens on the first publish from `main`.
+- **Found while writing, not fixed here** (reported to the maintainer):
+  - behaviour bugs measured with a scratch probe crate (a Specialty voice can stick on with Sustain 0; Bow's roughness ripple aliases at rate-dependent pitches; Brush Wire Stiffness is a level control; the top half of Pos Wander does nothing);
+  - a likely web-app bug (the diode dot never moves);
+  - a `render_presets` default that finds no presets;
+  - `nightly` not waiting for the `web` and `guide` jobs;
+  - stale comments and docs.
+
+  The pages describe the code as it is.

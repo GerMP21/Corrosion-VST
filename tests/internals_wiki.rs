@@ -289,7 +289,6 @@ fn every_linked_repository_path_exists() {
 }
 
 #[test]
-#[ignore = "pages being written (add-internals-wiki)"]
 fn every_source_file_is_named() {
     let named: BTreeSet<String> = pages().values().flat_map(|t| named_paths(t)).collect();
     let mut problems = Vec::new();
@@ -319,7 +318,6 @@ fn every_source_file_is_named() {
 }
 
 #[test]
-#[ignore = "pages being written (add-internals-wiki): links to pages not yet written"]
 fn wiki_links_resolve() {
     let pages = pages();
     let anchors: BTreeMap<&str, BTreeSet<String>> = pages
@@ -358,7 +356,6 @@ fn wiki_links_resolve() {
 }
 
 #[test]
-#[ignore = "pages being written (add-internals-wiki)"]
 fn sidebar_links_every_page() {
     let pages = pages();
     let sidebar = pages
