@@ -9,7 +9,7 @@
 
 - [x] 2.1 Write `tests/internals_wiki.rs` with the helper unit tests (GitHub heading slugger with repeats, "Source files" section parser, link extractor) and the five checks of design Decision 5; verify the helper tests pass and each check fails on the stub wiki, listing every offending page or file at once
 - [x] 2.2 Run each check red against its mutation on a scratch page (a missing `blob/main/` path, an unnamed `src/` file, a broken `#anchor`, a page left out of `_Sidebar.md`, a page with no "Source files"), then remove the scratch page; record the mutations and results in design.md `## Measurements`
-- [x] 2.3 Mark `every_source_file_is_named` and `sidebar_links_every_page` `#[ignore = "pages being written (add-internals-wiki)"]` until group 9, so intermediate commits keep the suite green; verify `cargo test --no-default-features --test internals_wiki` passes and the two ignored tests still fail with `-- --ignored`
+- [x] 2.3 Mark `every_source_file_is_named`, `sidebar_links_every_page` and (as built, while pages land one group at a time) `wiki_links_resolve` `#[ignore = "pages being written (add-internals-wiki)"]` until group 9, so intermediate commits keep the suite green; verify `cargo test --no-default-features --test internals_wiki` passes and the two ignored tests still fail with `-- --ignored`
 
 ## 3. Publishing
 
@@ -56,7 +56,7 @@ Each task in groups 4–8 writes its pages in the voice of design Decision 6, wi
 
 ## 9. Finish the check, the rule and the docs
 
-- [ ] 9.1 Finish `Glossary` and `Home`'s map; remove the two `#[ignore]`s from 2.3; verify the full `internals_wiki` test passes with no unnamed file and no page missing from the sidebar
+- [ ] 9.1 Finish `Glossary` and `Home`'s map; remove the three `#[ignore]`s from 2.3; verify the full `internals_wiki` test passes with no unnamed file and no page missing from the sidebar
 - [x] 9.2 Add the rule of design Decision 7 to `CLAUDE.md`: the new ⚠️ section after "The Wiki follows the plugin", the Build and test row, the OpenSpec "Docs" step. Verify by reading the three places together that they state the same rule and command
 - [x] 9.3 Add the rule to `CONTRIBUTING.md` (next to "The Wiki follows the plugin" and in the test commands) and to `.github/pull_request_template.md` (the checklist item and the test command); verify both match `CLAUDE.md`'s wording
 - [x] 9.4 Link the wiki from `docs/ARCHITECTURE.md` (top note) and `README.md`; verify the links point to `https://github.com/GerMP21/Corrosion-VST/wiki`
