@@ -14,9 +14,15 @@ pub mod controls;
 mod editor;
 #[cfg(feature = "gui")]
 mod file_dialog;
+#[cfg(any(feature = "gui", feature = "web-gui"))]
+mod fonts;
 pub mod palette;
 
 #[cfg(feature = "gui")]
 pub use editor::create_editor;
 #[cfg(feature = "web-gui")]
 pub use editor::WebEditor;
+/// Give an egui context the editor's fonts; the web app calls it once when
+/// its context is made (the plugin does it in `create_editor`).
+#[cfg(feature = "web-gui")]
+pub use fonts::install as install_fonts;

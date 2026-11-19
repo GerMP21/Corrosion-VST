@@ -28,10 +28,12 @@ name = "render_guide_clips"
 path = "src/bin/render_guide_clips.rs"
 
 [dependencies]
-nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", optional = true }
+# Without its default features: they would embed egui's default fonts, and
+# the editor brings its own (`src/gui/fonts.rs`, `replace-editor-fonts`).
+nih_plug_egui = { git = "https://github.com/robbert-vdh/nih-plug", optional = true, default-features = false, features = ["opengl"] }
 # The editor's egui without baseview, for the web build (`web-gui`). The same
-# version nih_plug_egui uses.
-egui = { version = "=0.31.1", optional = true }
+# version nih_plug_egui uses, without the default fonts.
+egui = { version = "=0.31.1", optional = true, default-features = false }
 # The native file dialogs behind the editor's Import and Export
 # (`add-preset-import-export`), plugin GUI only. On Linux the XDG desktop
 # portal, not GTK, so the bundle links no GTK and doesn't fight the host's.
@@ -81,3 +83,9 @@ opt-level = 1
 # vendor/nih_log/PATCHED.md.
 [patch.crates-io]
 nih_log = { path = "vendor/nih_log" }
+
+# egui-baseview without `default_fonts` among its default features, which
+# nih_plug_egui would otherwise always turn on; see
+# vendor/egui-baseview/PATCHED.md.
+[patch."https://github.com/BillyDM/egui-baseview.git"]
+egui-baseview = { path = "vendor/egui-baseview" }

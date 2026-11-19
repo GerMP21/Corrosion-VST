@@ -65,6 +65,25 @@ Pull requests that don't meet them may be sent back for changes or closed.
    `docs/ARCHITECTURE.md` (the as-built reference) when the design changes, and
    the Wiki as described below, all in the same pull request.
 
+## The Internals wiki follows the code
+
+**Every change must update, in the same pull request, every page of the
+Internals wiki that describes what it touched.** The Internals wiki is the
+repository's [GitHub Wiki](https://github.com/GerMP21/Corrosion-VST/wiki), written in `docs/internals/` and published
+from `main`. That covers code, build, tests, CI, scripts and tooling, not only
+sound. A new file is named in a page's `## Source files` section in the same
+pull request. Don't edit the wiki on GitHub: the next publish overwrites it.
+
+- Find the pages that describe a file with `grep -rl '<path>' docs/internals/`,
+  then fix what they say.
+- `cargo test --no-default-features --test internals_wiki` checks that every
+  named path exists, every source file and script is named by a page, links
+  between pages resolve, and the sidebar lists every page. It runs in CI.
+- Write for a developer who has never seen the code, in English, in the format
+  of the existing pages: Mermaid diagrams with a text twin, links between pages
+  as `[text](Page-Name)`, and a final `## Source files` list of repository
+  links. Add new pages to `_Sidebar.md`.
+
 ## The Wiki follows the plugin
 
 **Any change to how the plugin works or sounds must update the Corrosion Wiki
@@ -165,6 +184,7 @@ Windows with MSVC.
 | Editor (GUI) tests | `cargo test --lib` |
 | Real-time safety | `cargo test --no-default-features --test no_alloc` (debug builds only: the checking allocator doesn't exist in release) |
 | Docs | `cargo doc --no-deps --no-default-features` (should add no warnings) |
+| Internals wiki | `cargo test --no-default-features --test internals_wiki` |
 | Third-party notices | `python3 scripts/third_party_notices.py --check` (after a dependency change, run it without `--check` and commit `THIRD-PARTY-NOTICES.md`) |
 | Format, lint, tests, editor tests, a render check and the Linux bundle, in one go (Linux) | `./scripts/verify-local.sh` |
 | Wiki | `cd web/guide && npm ci && npm run check -- --complete && npm run build` |

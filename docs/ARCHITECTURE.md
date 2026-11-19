@@ -8,6 +8,7 @@ to what actually ships, not to the aspirational DSP described in
 of a spec, that is called out explicitly.
 
 > Companion documents:
+> - [Corrosion Internals](https://github.com/GerMP21/Corrosion-VST/wiki) — the repository's GitHub Wiki, written in `docs/internals/`: a detailed, readable explanation of how every part works, page by page, each naming its source files. This file stays the as-built record with history and measurements; the wiki explains.
 > - `FABLE-CODE-REVIEW-2026-11-14.md` (repository root) — the current code review of the plugin; its open findings are tracked in `docs/BACKLOG.md`. The earlier reviews, every finding closed, are `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` (each fixed finding names its OpenSpec change) and `docs/archive/CODE-REVIEW-2026-05-27.md`.
 > - `docs/original-specs/` — DSP design notes (some aspirational; see status banners).
 > - `docs/PRD.md` — product requirements (MVP-era, see its status section).
@@ -244,6 +245,11 @@ src/
                       XDG portal then zenity on Linux, no GTK): own thread polled
                       per frame (modal on the main thread on macOS); an empty answer
                       under 250 ms means no dialog was shown
+    fonts.rs          The editor's fonts (`replace-editor-fonts`): Inter for the
+                      interface, IBM Plex Sans SemiBold for the brand block, and
+                      Corrosion Icons, a 5-glyph TrueType font built in code for
+                      the triangles egui draws as text (the submenu arrow ⏵);
+                      `UI_EM_SCALE`; files and licenses in assets/fonts/
     editor.rs         egui editor: knobs/faders, UI scale (50–150 % in 5 % steps, `UI_SCALE_CHOICES`; the original five keep indices 0–4, the added steps are 5–20; default 75%: 810×630,
                       of which 54 are the keyboard strip;
                       a change asks the host to resize; the layout never exceeds the
@@ -907,7 +913,31 @@ knee width `w`, the curve is linear below `K = L·(1 − w)` and
 
 ### Editor inline help (`add-parameter-tooltips`)
 
-Every widget helper (`industrial_knob[_text]`, `industrial_fader[_text]`, `industrial_vfader`, `vfader_global`) paints its label with `paint_label_with_badge`: the label plus a painted ⓘ badge (1 physical px circle and "i" in `MUTED_GREY`; egui's fonts have no U+24D8). Only the badge's own hover area shows the tooltip. The text comes from `help_for(label)`, one table keyed by display label, so slot help follows the selected exciter or object. When a control's behaviour changes, update its entry. `industrial_combo` shows `selector_help(label, selected)` for the selected option: a **trial**, removable by deleting that function and the marked block. `every_drawn_control_has_help` and `every_slot_spec_has_help` check coverage; the hover tests check that the badge, not the knob, opens the tooltip; `help_follows_the_selected_exciter` / `_object`, `selector_help_describes_the_selection` and `badge_scales_with_the_ui` cover the other scenarios. Because help is keyed by label, a slot label shared between models shares its tooltip: `shared_slot_labels_are_reviewed` fails unless such a label is listed in `SHARED_SLOT_LABELS` (today only "Mallet Mass") after checking it means the same in each model.
+Every widget helper (`industrial_knob[_text]`, `industrial_fader[_text]`, `industrial_vfader`, `vfader_global`) paints its label with `paint_label_with_badge`: the label plus a painted ⓘ badge (1 physical px circle and "i" in `MUTED_GREY`; the editor's fonts have no U+24D8). Only the badge's own hover area shows the tooltip. The text comes from `help_for(label)`, one table keyed by display label, so slot help follows the selected exciter or object. When a control's behaviour changes, update its entry. `industrial_combo` shows `selector_help(label, selected)` for the selected option: a **trial**, removable by deleting that function and the marked block. `every_drawn_control_has_help` and `every_slot_spec_has_help` check coverage; the hover tests check that the badge, not the knob, opens the tooltip; `help_follows_the_selected_exciter` / `_object`, `selector_help_describes_the_selection` and `badge_scales_with_the_ui` cover the other scenarios. Because help is keyed by label, a slot label shared between models shares its tooltip: `shared_slot_labels_are_reviewed` fails unless such a label is listed in `SHARED_SLOT_LABELS` (today only "Mallet Mass") after checking it means the same in each model.
+
+### Editor fonts (`replace-editor-fonts`)
+
+The editor draws with its own fonts, and no Corrosion build embeds egui's default ones (Ubuntu Light, Noto Emoji, Hack, an emoji icon font):
+
+- **Inter 4.1 Regular** (`assets/fonts/`, OFL 1.1) is the proportional and the monospace family.
+- **IBM Plex Sans 1.1.0 SemiBold** (OFL 1.1) is the `brand` family. It sets the header's "CORROSION" and its two subtitle lines (`fonts::brand_family()`).
+- **Corrosion Icons** is the last fallback of every family. It is a TrueType font that `fonts::icon_font()` builds in code: `.notdef` plus four triangles at U+23F4–U+23F7, with Inter's em, ascender and descender. egui draws `⏵` on submenus (the preset browser's folders) and Inter has no such glyph.
+
+`fonts::install` sets them once per context: in `create_editor`'s build closure (each time the window opens), and in the web app's eframe creation closure (`corrosion::gui::install_fonts`). The editor's tests use `editor_test_context()`, which does the same. A context without them panics on its first layout ("FontFamily::Name(\"brand\") is not bound to any fonts").
+
+**Sizes.** `font_size()` multiplies every editor size by `fonts::UI_EM_SCALE` (0.9525). That is Ubuntu Light's cap height over Inter's (0.693 / 0.7275 em), so capitals stay as tall as they were, and rows stay within 0.3 % of their old height (1.153 against 1.149 em). The layout's tuned size fractions still hold. IBM Plex Sans gets a glyph `FontTweak` of 1.042 on top, so the brand's capitals match too. Its rows are taller (1.3 em), which egui doesn't scale.
+
+**Keeping the default fonts out.** `nih_plug_egui` depends on egui-baseview with its default features, which include `default_fonts`, and a dependent can't switch a transitive default feature off. So:
+- `vendor/egui-baseview` (patched in through `[patch."https://github.com/BillyDM/egui-baseview.git"]`; see its `PATCHED.md`) drops `default_fonts` from its defaults;
+- `nih_plug_egui` is used with `default-features = false, features = ["opengl"]`;
+- the root `egui` and `web/editor`'s `egui` and `eframe` are used without default fonts.
+
+`scripts/third_party_notices.py` fails if `epaint_default_fonts` reaches any shipped build (`FORBIDDEN`).
+
+**Coverage.** `gui::fonts::tests`:
+- `every_drawn_character_has_a_glyph` checks the editor's non-ASCII labels and units and egui's arrows in each family;
+- `the_icon_font_draws_the_submenu_arrow` checks that `⏵` comes from Corrosion Icons, not the replacement glyph;
+- `the_icon_font_is_well_formed` checks every table checksum and the file checksum.
 
 ### Editor keyboard (`add-editor-keyboard`)
 

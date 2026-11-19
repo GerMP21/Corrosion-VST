@@ -24,12 +24,34 @@ The maintainer is GerMP21. Every session is either the maintainer's or a contrib
 
 **Any change to how the plugin works or sounds MUST be recorded in the Corrosion Wiki (`/wiki/`, `web/guide/`) in the same change, in English and Spanish.** A control that acts differently, a new or removed behaviour, a new model or mode, a fixed surprise, a changed default or range: update every Wiki page that describes it (and Troubleshooting when it surprises people) before the change is closed. No change is done while the Wiki says something the plugin no longer does. This binds contributors' pull requests too: both languages, in the same pull request. The mechanics (data export, clips, screenshots, style) are in "User guide data and clips" and "Wiki writing style" below.
 
+## ⚠️ The Internals wiki follows the code, ALWAYS
+
+**Every change MUST update, in the same change, every page of the Internals wiki (`docs/internals/`, published as the repository's GitHub Wiki, "Corrosion Internals") that describes what it touched.** This covers code, build, tests, CI, scripts and tooling, not only sound. A new file is named in a page's `## Source files` section in the same change. No change is done while an Internals page says something the code no longer does. This binds contributors' pull requests too. The pages are English only.
+- **Find the affected pages:** `grep -rl '<path>' docs/internals/` for each file the change touches, then read what they say about it.
+- **The check:** `cargo test --no-default-features --test internals_wiki`. It runs in CI's test lane and fails:
+  - when a named path no longer exists;
+  - when a non-test `src/` file, or a top-level item of `web/`, `scripts/`, `tests/`, `benches/` or `.github/workflows/`, is named by no page;
+  - when a page or heading link is broken;
+  - when a page is missing from `_Sidebar.md`.
+
+  It can't tell whether the prose is still true; that's this rule.
+- **Format and voice:**
+  - one file per page, named as the wiki names it (`Signal-Chain.md`), first line `# Page Name`;
+  - links between pages as `[text](Page-Name#heading)`;
+  - Mermaid diagrams, each with a text twin;
+  - a final `## Source files` list of `https://github.com/GerMP21/Corrosion-VST/blob/main/<path>` links;
+  - written for a developer who has never seen the code: plain words, why before how, numbers where they matter, no review IDs or change names in the prose.
+
+  A new page goes in `_Sidebar.md`.
+- **Publishing:** `.github/workflows/wiki.yml` mirrors `docs/internals/` into the GitHub Wiki on every push to `main` (`scripts/publish-wiki.sh`). Never edit the wiki on GitHub: the next publish overwrites it.
+- **Alongside the other docs.** This doesn't replace `docs/ARCHITECTURE.md`, the as-built record with history and measurements, or the user Wiki (`web/guide/`, for players, EN + ES); update those as before.
+
 ## Third-party notices
 
 `THIRD-PARTY-NOTICES.md` holds the notices for everything in Corrosion that someone else wrote. The release zips carry it next to `LICENSE`, and the site's footers link it.
 
 - **Sections 1–3 are written by hand:**
-  - material in the repository: the OpenSpec skills and commands in `.claude/` and `.opencode/`, `vendor/nih_log`, and the NIH-plug patch;
+  - material in the repository: the OpenSpec skills and commands in `.claude/` and `.opencode/`, the editor's fonts in `assets/fonts/` (Inter, IBM Plex Sans), `vendor/nih_log`, `vendor/egui-baseview`, and the NIH-plug patch;
   - the npm code the site ships;
   - trademarks.
 
@@ -37,6 +59,7 @@ The maintainer is GerMP21. Every session is either the maintainer's or a contrib
 - **Section 4 (Rust crates) is generated** by `python3 scripts/third_party_notices.py` from `Cargo.lock` and `web/Cargo.lock`. It covers every target the bundles and the web app ship. Rerun it after any lockfile change, `cargo update` included, and commit the result.
   - CI's `web` job and `verify-local.sh` run it with `--check`.
   - It fails on a license outside its GPLv3-compatible allowlist (`ALLOWED`). Stop and ask the maintainer then; don't widen the list yourself.
+  - It also fails when a crate in `FORBIDDEN` ships: `epaint_default_fonts` (egui's default fonts), which the editor replaced with its own (`replace-editor-fonts`).
 
 ## Working with the maintainer and contributors
 
@@ -77,7 +100,7 @@ The guide's voice is the maintainer's choice (2026-11-14), set as the `guide-wri
 - **Respect the reader.** Assume no DSP training, but never talk down. Explain a term or link the glossary the first time it appears on a page. Use maths only when it's the simplest way to say something.
 - **Accuracy over charm.** Every claim, tip and joke must agree with the plugin. Check tips by ear, by a render or in the code. Say plainly when an effect is subtle.
 
-## Current state (2026-11-15)
+## Current state (2026-11-19)
 
 The current code review is `FABLE-CODE-REVIEW-2026-11-14.md` (the plugin; its open findings are also in `docs/BACKLOG.md`). The previous one, `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md`, is closed: each fixed finding there is struck through, with a `Status: FIXED` note naming its OpenSpec change. The table below follows that previous review.
 
@@ -117,9 +140,21 @@ No clips regenerated. |
 - Checked in REAPER (Linux) with zenity and with no dialog; the portal, Windows and macOS dialogs are not checked here.
 - Zenity ignores the proposed export name (a zenity limit).
 - Wiki: Browse and save, Preset files, Editor, Troubleshooting (EN + ES). |
-| Backlog | `docs/BACKLOG.md`, open items only (2026-11-14): the open findings of `FABLE-CODE-REVIEW-2026-11-14.md` (C1, R1–R8, O1–O10, N1–N11), the three items the 2026-07-07 review left open (M14, M17, the HRTF mono remix), and Release Snap, real Bow stick-slip, Env Amount, Gesture Modifiers, default-patch decay, MSEG PingPong, web canvas DPR, browser name; deferred features (mod matrix, sequencer, effect mode, output meter); DAW smoke automation, visual GUI tests, benchmark baselines |
+| Third-party notices (maintainer request) | Done (2026-11-18), no OpenSpec change: `THIRD-PARTY-NOTICES.md` (see "Third-party notices" above), generated by `scripts/third_party_notices.py`, checked in CI's `web` job; in the release zips; linked from the site's footers. |
+| Editor fonts (maintainer request) | `replace-editor-fonts` done (2026-11-19), archived 2026-11-19 (the maintainer still checks it in a DAW).
+- Inter 4.1 Regular for the interface, IBM Plex Sans SemiBold for the brand block (maintainer), and Corrosion Icons, a 5-glyph font built in code for egui's submenu arrow `⏵`. In `src/gui/fonts.rs`, with the files in `assets/fonts/`.
+- Sizes × `UI_EM_SCALE` 0.9525: same cap height as Ubuntu Light, rows +0.3 %. Layout tests unchanged.
+- egui's default fonts are out of every build: `vendor/egui-baseview` drops `default_fonts`, and the notices script's `FORBIDDEN` guards it. Fonts 1.41 MB → 0.61 MB; web editor wasm −777 KB.
+- Wiki screenshots retaken. Not checked in REAPER (not in the container). |
+| Internals wiki (maintainer request) | `add-internals-wiki` done (2026-11-19), archived 2026-11-19.
+- The GitHub Wiki "Corrosion Internals" is written in `docs/internals/` (see "The Internals wiki follows the code" above): 36 pages, about 87k words and 57 Mermaid diagrams, every page ending with its source files.
+- `tests/internals_wiki.rs` (CI lane) checks paths, coverage of every source file and script, links and anchors, and the sidebar.
+- `.github/workflows/wiki.yml` publishes on `main` through `scripts/publish-wiki.sh`. It needs the wiki initialized once (create any page in GitHub); the job's token pushing to the wiki is unproven until then.
+- `add-developer-site` was deleted.
+- The writers found bugs and stale docs, listed in its `design.md` Measurements and filed in `docs/BACKLOG.md` (not fixed). |
+| Backlog | `docs/BACKLOG.md`, open items only (2026-11-14): the open findings of `FABLE-CODE-REVIEW-2026-11-14.md` (C1, R1–R8, O1–O10, N1–N11), the three items the 2026-07-07 review left open (M14, M17, the HRTF mono remix), and Release Snap, real Bow stick-slip, Env Amount, Gesture Modifiers, default-patch decay, MSEG PingPong, web canvas DPR, browser name; deferred features (mod matrix, sequencer, effect mode, output meter); DAW smoke automation, visual GUI tests, benchmark baselines. Since 2026-11-19 also "Found while writing the Internals wiki": Bow's aliasing Roughness ripple, Wire Stiffness as a level control, Pos Wander's dead top half, the web app's dark diode dot, the Lookahead limiter's stale samples, Spread Width's backwards help, Metal Chain's dead 40–50 ms, empty Kit presets loading as Tonal, stale docs; and under testing, `render_presets`' empty default, `nightly` not waiting for `web`/`guide`, the DAW and local-lane scripts |
 
-**Archived:** `h01`–`h14`, `resolve-exciter-tradeoffs` and `stabilize-mallet-and-grinding-contact` (2026-11-08); `m03-m20-start-at-host-rate-and-report-latency`, `m13-sustain-pedal-and-panic`, `m07-m08-interpolate-echo-and-tidy-spread`, `m06-m09-smooth-starvation-and-oversample-clipper` and `fix-rust-damage-heat-response` (2026-11-09); `m01-m04-m05-clarify-parameters`, `block-voice-mix-dc`, `add-asymmetric-diode-stage`, `add-parameter-tooltips`, `m12-per-note-expression`, `m10-m18-tidy-dead-code-and-docs`, `add-editor-keyboard`, `reorganize-factory-presets`, `fix-pneumatic-jet-saturation` and `per-key-kits` (2026-11-10); `extend-ci-windows-linux-macos`, `add-web-app`, `add-site-shell`, `add-user-guide`, `fix-inert-controls` and `add-preset-import-export` (2026-11-15). They are in `openspec/changes/archive/`, and their delta specs are synced into `openspec/specs/` (37 capabilities; `voice-mix-dc`, `diode-stage`, `host-parameters`, `note-expression`, `editor-keyboard` and `factory-preset-bank` new on 2026-11-10; `continuous-integration`, `web-app`, `site-shell`, `user-guide`, `guide-audio-clips` and `control-response` new on 2026-11-15). **Pending from the diode stage:** the maintainer judges the knee by ear and may adjust the Softness/Asymmetry defaults (a small follow-up change if so). Every review finding's change is archived. **Active:** `write-user-guide-content` (written, waiting on the maintainer's Spanish review) and `refine-wiki-naming-and-clips` (done, to archive after it). CI run times are in the archived extend-ci change's `design.md`; `no_alloc` runs on Windows too, with `the_checker_is_armed` proving the checker is installed. A new change syncs its specs on archive as usual (`/opsx:archive`).
+**Archived:** `h01`–`h14`, `resolve-exciter-tradeoffs` and `stabilize-mallet-and-grinding-contact` (2026-11-08); `m03-m20-start-at-host-rate-and-report-latency`, `m13-sustain-pedal-and-panic`, `m07-m08-interpolate-echo-and-tidy-spread`, `m06-m09-smooth-starvation-and-oversample-clipper` and `fix-rust-damage-heat-response` (2026-11-09); `m01-m04-m05-clarify-parameters`, `block-voice-mix-dc`, `add-asymmetric-diode-stage`, `add-parameter-tooltips`, `m12-per-note-expression`, `m10-m18-tidy-dead-code-and-docs`, `add-editor-keyboard`, `reorganize-factory-presets`, `fix-pneumatic-jet-saturation` and `per-key-kits` (2026-11-10); `extend-ci-windows-linux-macos`, `add-web-app`, `add-site-shell`, `add-user-guide`, `fix-inert-controls` and `add-preset-import-export` (2026-11-15); `add-internals-wiki` and `replace-editor-fonts` (2026-11-19). They are in `openspec/changes/archive/`, and their delta specs are synced into `openspec/specs/` (39 capabilities; `voice-mix-dc`, `diode-stage`, `host-parameters`, `note-expression`, `editor-keyboard` and `factory-preset-bank` new on 2026-11-10; `continuous-integration`, `web-app`, `site-shell`, `user-guide`, `guide-audio-clips` and `control-response` new on 2026-11-15; `developer-wiki` and `editor-fonts` new on 2026-11-19). **Pending from the diode stage:** the maintainer judges the knee by ear and may adjust the Softness/Asymmetry defaults (a small follow-up change if so). Every review finding's change is archived. **Active:** `write-user-guide-content` (written, waiting on the maintainer's Spanish review), and `refine-wiki-naming-and-clips` (done, to archive after it). CI run times are in the archived extend-ci change's `design.md`; `no_alloc` runs on Windows too, with `the_checker_is_armed` proving the checker is installed. A new change syncs its specs on archive as usual (`/opsx:archive`).
 
 ### Execution order for the M changes (and two feature changes)
 
@@ -165,7 +200,7 @@ How each change has been done, and what the maintainer expects:
 1. **Tests first.** Write the spec scenarios as tests and verify they fail on the current code (or that a reference test passes), before implementing.
 2. **Implement**, keeping changes scoped to the tasks. Mark each task `- [x]` as soon as it is done and verified.
 3. **Record numbers in the change's `design.md`** (a `## Measurements` section): before/after values, benchmark tables, anything the proposal guessed wrong. When the implementation differs from a design decision, add an *As built* note rather than leaving the design stale.
-4. **Docs:** update `docs/ARCHITECTURE.md` (and the README when users see the change), and mark the finding FIXED in `FABLE-CODE-REVIEW-2026-11-14.md` (and remove its item from `docs/BACKLOG.md`) with date, change link and what proves it.
+4. **Docs:** update `docs/ARCHITECTURE.md`, every Internals wiki page that describes what changed (`docs/internals/`, see above), and the README when users see the change; and mark the finding FIXED in `FABLE-CODE-REVIEW-2026-11-14.md` (and remove its item from `docs/BACKLOG.md`) with date, change link and what proves it.
 5. **Close out:** `cargo fmt --check`, clippy with `-D warnings`, the full test suite, then commit and push.
 6. **Update "Current state" in this file** when a change is finished, without being asked: the date in its heading, the change's row (fixed or done), what is next, and the archive note. Don't record PR numbers, branches or merge status here: GitHub and git already hold them. Commit it with the change's close-out.
 
@@ -188,6 +223,7 @@ CI (`.github/workflows/ci.yml`) uses `x86_64-unknown-linux-musl` with the latest
 | musl parity | `CARGO_BUILD_TARGET=x86_64-unknown-linux-musl cargo test --workspace --no-default-features` (`rustup target add x86_64-unknown-linux-musl`) |
 | Real-time safety | `cargo test --no-default-features --test no_alloc` (debug only; the checking allocator doesn't exist in release) |
 | Docs | `cargo doc --no-deps --no-default-features` (should add no warnings) |
+| Internals wiki | `cargo test --no-default-features --test internals_wiki` (paths, coverage, links, sidebar of `docs/internals/`) |
 | Third-party notices | `python3 scripts/third_party_notices.py --check` (after a dependency change, run it without `--check` and commit `THIRD-PARTY-NOTICES.md`) |
 | Full local lane | `./scripts/verify-local.sh` |
 

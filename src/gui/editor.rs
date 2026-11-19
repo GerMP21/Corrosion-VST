@@ -752,7 +752,10 @@ pub fn create_editor(
         },
         // The state outlives the window; the audio thread released the
         // editor's notes when it closed, so start the strip clean.
-        |_, state| state.keyboard.reopened(),
+        |egui_ctx, state| {
+            super::fonts::install(egui_ctx);
+            state.keyboard.reopened();
+        },
         move |egui_ctx, setter, state| {
             let ui_scale = params.ui_scale.value();
             let requested_scale = ui_scale_factor(ui_scale);
@@ -982,9 +985,11 @@ fn editor_height(scale: f32) -> f32 {
 /// with it): the fonts were a little small to read (maintainer, 2026-11-13).
 const FONT_SIZE_BOOST: f32 = 1.0;
 
-/// A font size: `pct` of the editor width, plus [`FONT_SIZE_BOOST`].
+/// A font size: `pct` of the editor width, plus [`FONT_SIZE_BOOST`], times
+/// [`super::fonts::UI_EM_SCALE`] so Inter keeps the cap height and row
+/// height the layout was tuned for.
 fn font_size(scale: f32, pct: f32) -> f32 {
-    width_pct(scale, pct) + FONT_SIZE_BOOST * scale
+    (width_pct(scale, pct) + FONT_SIZE_BOOST * scale) * super::fonts::UI_EM_SCALE
 }
 
 fn width_pct(scale: f32, pct: f32) -> f32 {
@@ -1712,7 +1717,7 @@ fn paint_info_badge(
         badge.center(),
         egui::Align2::CENTER_CENTER,
         "i",
-        egui::FontId::proportional(radius * 1.4),
+        egui::FontId::proportional(radius * 1.4 * super::fonts::UI_EM_SCALE),
         MUTED_GREY,
     );
     let mut response = ui.interact(
@@ -1897,6 +1902,7 @@ fn render_header(
                         ui.label(
                             egui::RichText::new("CORROSION")
                                 .size(font_size(scale, 0.02037037))
+                                .family(super::fonts::brand_family())
                                 .color(OFF_WHITE)
                                 .strong(),
                         );
@@ -1910,7 +1916,10 @@ fn render_header(
                     ui.add_space(width_pct(scale, 0.0037037036));
                     // Measure the two lines first and reserve their width,
                     // plus a margin, so the next column starts after them.
-                    let font = egui::FontId::proportional(font_size(scale, 0.0074074073));
+                    let font = egui::FontId::new(
+                        font_size(scale, 0.0074074073),
+                        super::fonts::brand_family(),
+                    );
                     let galley1 = ui.painter().layout_no_wrap(
                         "INDUSTRIAL RESONATOR".into(),
                         font.clone(),
@@ -4403,6 +4412,15 @@ thread_local! {
 // Tests (unchanged)
 // ---------------------------------------------------------------------------
 
+/// A headless egui context with the editor's fonts, as the plugin and the
+/// web app make theirs (egui's default fonts aren't built in).
+#[cfg(test)]
+fn editor_test_context() -> egui::Context {
+    let ctx = egui::Context::default();
+    super::fonts::install(&ctx);
+    ctx
+}
+
 #[cfg(test)]
 mod tests {
     /// A host stand-in for headless editor renders: it accepts every
@@ -4535,7 +4553,7 @@ mod tests {
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         let mut state = super::EditorUiState::new(1, (810, 576));
         let scale = super::layout_scale(requested, window.0);
-        let ctx = egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         super::apply_editor_style(&ctx, scale);
         let mut right = 0.0;
         for _ in 0..2 {
@@ -4617,7 +4635,7 @@ mod tests {
         let gui = NullGui;
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         super::DRAWN_DIODE_DOT.with(|dot| dot.set(None));
-        let ctx = nih_plug_egui::egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         let input = nih_plug_egui::egui::RawInput {
             screen_rect: Some(nih_plug_egui::egui::Rect::from_min_size(
                 nih_plug_egui::egui::Pos2::ZERO,
@@ -4705,7 +4723,7 @@ mod tests {
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         let mut state =
             super::EditorUiState::new(2, (super::BASE_EDITOR_WIDTH, super::BASE_EDITOR_HEIGHT));
-        let ctx = nih_plug_egui::egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         let input = nih_plug_egui::egui::RawInput {
             screen_rect: Some(nih_plug_egui::egui::Rect::from_min_size(
                 nih_plug_egui::egui::Pos2::ZERO,
@@ -4943,7 +4961,7 @@ mod tests {
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         let mut state =
             super::EditorUiState::new(2, (super::BASE_EDITOR_WIDTH, super::BASE_EDITOR_HEIGHT));
-        let ctx = egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         super::apply_editor_style(&ctx, 1.0);
         let mut texts = Vec::new();
         for frame in 0..12 {
@@ -5409,7 +5427,7 @@ mod tests {
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         let mut state =
             super::EditorUiState::new(2, (super::BASE_EDITOR_WIDTH, super::BASE_EDITOR_HEIGHT));
-        let ctx = nih_plug_egui::egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         super::apply_editor_style(&ctx, 1.0);
         let input = nih_plug_egui::egui::RawInput {
             screen_rect: Some(nih_plug_egui::egui::Rect::from_min_size(
@@ -5435,7 +5453,7 @@ mod tests {
         let setter = nih_plug::prelude::ParamSetter::new(&gui);
         let mut state =
             super::EditorUiState::new(2, (super::BASE_EDITOR_WIDTH, super::BASE_EDITOR_HEIGHT));
-        let ctx = nih_plug_egui::egui::Context::default();
+        let ctx = crate::gui::editor::editor_test_context();
         super::apply_editor_style(&ctx, 1.0);
         let mut bottom = 0.0;
         // Two frames: egui settles some sizes on the second.
@@ -6222,7 +6240,7 @@ mod tests {
                     keyboard: super::super::KeyboardStrip::new(shared.clone()),
                     ..super::super::EditorUiState::new(1, super::super::scaled_editor_size(scale))
                 };
-                let ctx = egui::Context::default();
+                let ctx = crate::gui::editor::editor_test_context();
                 super::super::apply_editor_style(&ctx, scale);
                 let mut harness = Self {
                     scale,

@@ -63,23 +63,23 @@ LICENSE_FILE = re.compile(
     r"^(licen[cs]e|copying|notice|unlicense|copyright)([-._].*)?$", re.IGNORECASE
 )
 # License files a crate keeps under another name or in a subdirectory.
-EXTRA_FILES = {
-    "epaint_default_fonts": [
-        "fonts/OFL.txt",
-        "fonts/UFL.txt",
-        "fonts/Hack-Regular.txt",
-        "fonts/emoji-icon-font-mit-license.txt",
-    ],
+EXTRA_FILES = {}
+
+# Crates that must not ship, and why. Finding one fails the run.
+FORBIDDEN = {
+    "epaint_default_fonts": (
+        "egui's default fonts (Ubuntu Font Licence, OFL emoji); the editor embeds "
+        "its own (src/gui/fonts.rs). Something turned egui's `default_fonts` back on: "
+        "see vendor/egui-baseview/PATCHED.md"
+    ),
 }
 
-# GPLv3-compatible licenses, plus the font licenses of egui's default fonts
-# (data embedded in the editor, reviewed by hand). Anything else fails the run.
+# GPLv3-compatible licenses. Anything else fails the run.
 ALLOWED = {
     "0BSD", "Apache-2.0", "BlueOak-1.0.0", "BSD-1-Clause", "BSD-2-Clause",
     "BSD-3-Clause", "BSL-1.0", "CC0-1.0", "GPL-3.0", "GPL-3.0-only",
     "GPL-3.0-or-later", "ISC", "LLVM-exception", "MIT", "MIT-0", "MPL-2.0",
-    "OFL-1.1", "Ubuntu-font-1.0", "Unicode-3.0", "Unicode-DFS-2016",
-    "Unlicense", "Zlib",
+    "Unicode-3.0", "Unicode-DFS-2016", "Unlicense", "Zlib",
 }
 ALIASES = {"GPLv3": "GPL-3.0"}
 
@@ -360,6 +360,8 @@ def generate():
         if not license_expr:
             problems.append(f"{name} {version}: no license field")
             continue
+        if name in FORBIDDEN:
+            problems.append(f"{name} {version} must not ship: {FORBIDDEN[name]}")
         unknown = [i for i in spdx_ids(license_expr) if i not in ALLOWED]
         if unknown:
             problems.append(f"{name} {version}: {license_expr} (not on the allowlist: {', '.join(unknown)})")
