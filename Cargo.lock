@@ -721,7 +721,6 @@ dependencies = [
 [[package]]
 name = "egui-baseview"
 version = "0.5.0"
-source = "git+https://github.com/BillyDM/egui-baseview.git?rev=ec70c3fe6b2f070dcacbc22924431edbe24bd1c0#ec70c3fe6b2f070dcacbc22924431edbe24bd1c0"
 dependencies = [
  "baseview",
  "copypasta",
@@ -778,17 +777,10 @@ dependencies = [
  "bytemuck",
  "ecolor",
  "emath",
- "epaint_default_fonts",
  "nohash-hasher",
  "parking_lot",
  "profiling",
 ]
-
-[[package]]
-name = "epaint_default_fonts"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc7e7a64c02cf7a5b51e745a9e45f60660a286f151c238b9d397b3e923f5082f"
 
 [[package]]
 name = "equivalent"

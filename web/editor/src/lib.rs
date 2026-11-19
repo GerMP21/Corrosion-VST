@@ -134,7 +134,12 @@ pub async fn start(
         .start(
             canvas,
             options,
-            Box::new(move |_cc| Ok(Box::new(CorrosionApp::new(app_canvas, post, seed, session)))),
+            Box::new(move |cc| {
+                // The editor's own fonts (Inter, IBM Plex Sans); egui's
+                // defaults aren't built in.
+                corrosion::gui::install_fonts(&cc.egui_ctx);
+                Ok(Box::new(CorrosionApp::new(app_canvas, post, seed, session)))
+            }),
         )
         .await
 }
