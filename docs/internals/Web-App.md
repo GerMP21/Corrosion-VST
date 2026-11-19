@@ -33,7 +33,7 @@ flowchart LR
 
 **Why two instances.** The audio has to render on the AudioWorklet thread, and the editor has to draw on the main thread (it owns the canvas and DOM events). One instance with shared memory would need `SharedArrayBuffer` (cross-origin isolation headers) and wasm threads (nightly Rust); the design rejected that as more fragile to host and build. So each side has its own instance and its own `CorrosionParams`, and they talk by messages. Parameters are addressed by index in `param_map()` order, which both sides compute from the same crate.
 
-## The `web/` workspace and the patched NIH-plug
+## The web workspace and the patched NIH-plug
 
 `web/Cargo.toml` is a Cargo workspace of its own (members `engine` and `editor`), separate from the plugin's.
 
