@@ -30,7 +30,7 @@ Practical notes:
 - **Set a target first.** `.cargo/config.toml` defaults every command to `x86_64-pc-windows-gnu` (the maintainer's machine). On Linux, `export CARGO_BUILD_TARGET=x86_64-unknown-linux-gnu`. See [Building and Bundling](Building-and-Bundling#targets).
 - **`[profile.test]` has `opt-level = 1`.** Tests render many seconds of audio; level 1 keeps debug assertions and overflow checks and still cuts run time several-fold. The real-time lane needs a debug profile, and this is one.
 - `cargo test --workspace` covers only the plugin crate. The web app is a separate Cargo workspace in `web/` with its own tests (`cargo test -p corrosion-web-engine`), run by CI's `web` job; see [Web App](Web-App).
-- `./scripts/verify-local.sh` runs format, notices, clippy, the CI lane, the GUI lane on gnu, a render smoke test and the Linux bundle in one go; it does not run `no_alloc` separately or `cargo doc`. See [Building and Bundling](Building-and-Bundling#the-full-local-lane).
+- `./scripts/verify-local.sh` runs format, notices, clippy, the CI lane, the GUI lane on gnu, a render smoke test and the Linux bundle in one go; it does not run `no_alloc` separately or `cargo doc`. See [Building and Bundling](Building-and-Bundling#the-full-local-lane-scriptsverify-localsh).
 - CI's exact steps are on [CI and Releases](CI-and-Releases).
 
 ## Integration tests (`tests/`)
