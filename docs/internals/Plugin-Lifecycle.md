@@ -40,7 +40,7 @@ In words:
 | Item | Value | Notes |
 |---|---|---|
 | `NAME` | `"Corrosion"` | |
-| `VENDOR` | `"German Martinez"` | `plugin_vendor_is_german_martinez` pins it. |
+| `VENDOR` | `"Corrosion Contributors"` | `plugin_vendor_is_corrosion_contributors` pins it. |
 | `URL`, `EMAIL` | empty | |
 | `VERSION` | `env!("CARGO_PKG_VERSION")` | 0.2.0 today, from `Cargo.toml`. |
 | `AUDIO_IO_LAYOUTS` | one layout: no main input, 2 output channels, no aux ports | An instrument. |
