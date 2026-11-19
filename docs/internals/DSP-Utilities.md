@@ -126,7 +126,7 @@ Nothing in the plugin uses it: the BODY control drives `FemBodyResonator` in the
 - `RealtimeModeCountEstimate { profile_id, canonical_mode_count, safe_realtime_mode_count, offline_peak_mode_count }`: the table length, the same number as the "safe" count, and the count after the legacy table path with Damage 1 (twice the table).
 - `realtime_mode_count_estimates()` covers Pipe, Plate, Tank and Chain only; `safe_realtime_shared_mode_limit()` and `offline_peak_shared_mode_limit()` take their maximum.
 
-The functions are `#[cfg_attr(not(test), allow(dead_code))]` and only `realtime_mode_count_estimates_stay_grounded_in_current_profile_tables` in `src/dsp/tests.rs` calls them. The module comment says the voice uses them to choose polyphonic mode counts; it doesn't. The real bound is `MAX_MODES` ([Modal Resonator](Modal-Resonator#max_modes-and-max_raw_modes)).
+The functions are `#[cfg_attr(not(test), allow(dead_code))]` and only `realtime_mode_count_estimates_stay_grounded_in_current_profile_tables` in `src/dsp/tests.rs` calls them. The module comment says the voice uses them to choose polyphonic mode counts; it doesn't. The real bound is `MAX_MODES` ([Modal Resonator](Modal-Resonator#buffer-sizes-max_modes-and-max_raw_modes)).
 
 ## Deterministic excitation
 

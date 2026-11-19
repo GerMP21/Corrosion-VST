@@ -58,8 +58,15 @@ fn pages() -> BTreeMap<String, String> {
 }
 
 /// The page's text with fenced code blocks and inline code spans blanked,
-/// so links and headings inside code don't count.
+/// so links inside code don't count.
 fn strip_code(text: &str) -> String {
+    strip_code_with(text, false)
+}
+
+/// The page's text with fenced code blocks blanked and, if `keep_inline`,
+/// inline code kept as its text without the backticks (as GitHub does when
+/// it builds a heading's anchor).
+fn strip_code_with(text: &str, keep_inline: bool) -> String {
     let mut out = String::new();
     let mut fence: Option<String> = None;
     for line in text.lines() {
@@ -85,7 +92,7 @@ fn strip_code(text: &str) -> String {
         for c in line.chars() {
             if c == '`' {
                 in_code = !in_code;
-            } else if !in_code {
+            } else if !in_code || keep_inline {
                 out.push(c);
             }
         }
@@ -171,7 +178,7 @@ fn slug(heading: &str) -> String {
 fn anchors(text: &str) -> BTreeSet<String> {
     let mut seen: BTreeMap<String, usize> = BTreeMap::new();
     let mut anchors = BTreeSet::new();
-    for line in strip_code(text).lines() {
+    for line in strip_code_with(text, true).lines() {
         let hashes = line.chars().take_while(|&c| c == '#').count();
         if (1..=6).contains(&hashes) && line[hashes..].starts_with(' ') {
             let base = slug(&line[hashes + 1..]);
@@ -380,11 +387,11 @@ fn slugs_follow_github() {
     );
     assert_eq!(slug("[Link](Page) text"), "link-text");
     assert_eq!(slug("Rust, Damage and Heat"), "rust-damage-and-heat");
-    let page = "# A\n## Notes\n### Notes\n```\n## Not a heading\n```\n";
+    let page = "# A\n## Notes\n### Notes\n```\n## Not a heading\n```\n## Sizes: `MAX_MODES`\n";
     let found = anchors(page);
     assert_eq!(
         found,
-        ["a", "notes", "notes-1"]
+        ["a", "notes", "notes-1", "sizes-max_modes"]
             .map(String::from)
             .into_iter()
             .collect()

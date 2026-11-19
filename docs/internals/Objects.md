@@ -33,7 +33,7 @@ A `ModalProfile` (`src/dsp/profile.rs`) is `{ id: ModalProfileId, modes: &'stati
 
 The tables are fixed frequencies in hertz from an earlier design. **They no longer shape the sound.** What they still do:
 
-- Their length is each object's base mode count (`ModalProfile::mode_count`), and `MAX_BASE_MODE_COUNT` (12, Industrial Cog's) sizes the preallocated buffers; see [Modal Resonator](Modal-Resonator#max_modes-and-max_raw_modes).
+- Their length is each object's base mode count (`ModalProfile::mode_count`), and `MAX_BASE_MODE_COUNT` (12, Industrial Cog's) sizes the preallocated buffers; see [Modal Resonator](Modal-Resonator#buffer-sizes-max_modes-and-max_raw_modes).
 - `ModalProfile::scaled_mode_specs_extended` builds a bank straight from the table (Size scaling, then the transforms). Only the legacy `ModalResonator::from_profile` constructors use it: a voice's initial silent resonator, the offline Rust and Damage comparison renders in `src/offline/mod.rs`, and tests.
 - The budget estimates in `src/dsp/utils/budget.rs` count them; see [DSP Utilities](DSP-Utilities#budget-estimates).
 

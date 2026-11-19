@@ -161,7 +161,7 @@ Two queries let other parts of the voice look one sample ahead without running t
 
 ## Building the bank at note-on
 
-### `MAX_MODES` and `MAX_RAW_MODES`
+### Buffer sizes: MAX_MODES and MAX_RAW_MODES
 
 Note-on runs on the audio thread, so it must not allocate. Every buffer is sized once for the worst case:
 
