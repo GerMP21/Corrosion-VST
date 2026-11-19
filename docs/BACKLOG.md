@@ -178,6 +178,72 @@ mark it FIXED there and remove it here.
   widens or keeps the dry image, with a test (a sound change: bank tests), or
   the behaviour is documented in the Wiki.
 
+## Found while writing the Internals wiki (2026-11-19)
+
+The writers of `docs/internals/` (`add-internals-wiki`) read every module
+against the docs. These issues are new; the ones the 2026-11-14 review already
+lists (such as C1's specialty voice that never releases) aren't repeated. The
+pages describe the code as it is today, so each fix also updates its page.
+
+- [ ] **[BUG] Bow's Roughness ripple aliases, at a pitch that depends on the
+  sample rate.** The ripple's phase advances by the bow speed per 48 kHz sample,
+  so it sits near 45 kHz and folds back: measured at 942 Hz at 44.1 kHz,
+  2959 Hz at 48 kHz and 45 kHz at 96 kHz (`src/dsp/exciters/bow.rs:126`).
+  *Accept:* the ripple's frequency is the same at 44.1, 48 and 96 kHz and below
+  Nyquist, with a test; bowed presets checked by ear and the bank tests pass;
+  Internals page Friction Exciters updated.
+- [ ] **[BUG] Wire Stiffness (Wire Brush) is a level control, not a tone
+  control.** The filter uses the low-pass coefficient `dt/(RC+dt)`, so
+  stiffness scales a single impulse's level by about 29 dB (0.0129 / 0.145 /
+  0.349 at 0 / 0.3 / 1) with the same shape, while the comment and the help say
+  "brighter, sharper" (`src/dsp/exciters/wire_brush.rs:167`). *Accept:* decide
+  by ear: make it brighten (a high-pass or a tilt, levelled), or rename and
+  re-describe it; help text, user Wiki (EN + ES) and Internals page Hit
+  Exciters match the code; bank tests pass.
+- [ ] **[BUG] The top half of Pos Wander does nothing.** The host range is 0–1,
+  but the bus clamps the amount to 0–0.5 (`src/dsp/interaction.rs:82`).
+  *Accept:* the whole range acts (rescale, with preset and host migrations so
+  saved sounds don't change) or the range shrinks to 0–0.5 (BREAKING for
+  automation); `every_sound_shaping_control_changes_its_note` covers the top of
+  the range.
+- [ ] **[BUG] The web app's diode dot never lights.** Only `Plugin::process`
+  publishes the clipper's gain reduction to the `DiodeMeter`
+  (`src/lib.rs:1511`). `WebEngine::process` never calls
+  `take_clipper_reduction_db`, so `report()` reads a meter nothing writes
+  (`src/web/mod.rs:146-162, 216`). Found by reading the code, not run.
+  *Accept:* the web engine publishes the meter after each block; a test drives
+  the engine into the clipper and sees a non-zero `diode_reduction_db` in the
+  report.
+- [ ] **[BUG] The Lookahead limiter replays old samples on a switch from Hard.**
+  The limiters aren't cleared when the Limiter mode changes, so the first
+  48 samples after Hard → Lookahead replay what the delay line held when it was
+  last used (`src/lib.rs:1279-1291`, `lookahead_limiter.rs`). *Accept:* the
+  delay line is cleared or crossfaded on the switch, with a test.
+- [ ] **[BUG] Spread Width's help is backwards.** It says "Higher sounds wider",
+  but the side gain `(1 − w/2)(1 − 0.6w)` falls as Width rises
+  (`src/gui/controls.rs:1088`); related to the HRTF mono remix item below.
+  *Accept:* the help and the user Wiki describe what Width does, or Width is
+  changed to widen (with the mono remix item).
+- [ ] **[VERIFY] A Kit preset with an empty kit loads as Tonal.** Saving in Kit
+  mode with no pads writes no `kit` field, and `migrate_old_kit_mode` then
+  loads the preset as Tonal (`src/presets/mod.rs:83-90, 671-707`). Found by
+  reading the code. *Accept:* decide whether an empty kit should round-trip as
+  Kit; if so, a round-trip test.
+- [ ] **[BUG] Metal Chain's Spread starts at 50 ms, not 40.** The host range
+  starts at 40 ms but the exciter clamps to 50–1000 ms, so the bottom of the
+  range is dead (`src/dsp/exciters/metal_chain.rs:111`). *Accept:* the range
+  and the clamp agree.
+- [ ] **[CHORE] Stale comments and docs.** About 30 places where a comment,
+  `docs/ARCHITECTURE.md`, the README or `CLAUDE.md` says something the code
+  doesn't do, listed with file and line in
+  `openspec/changes/add-internals-wiki/design.md`; among them the Brightness
+  macro's "±2 octaves" (it is ±1, `src/lib.rs:194, 244`), Global Time's
+  inverted description (`src/params.rs:277`), the `PlayMode` doc still
+  describing the old Kit slots (`src/params.rs:1255`), the module docs of
+  `src/gui/mod.rs`, `src/dsp/utils/` and `basic.rs`, and the filter's file name
+  `wdf_filter.rs` for a TPT ladder. *Accept:* each corrected or removed;
+  Internals pages unchanged or updated to match.
+
 ## Features (deferred)
 
 - [ ] **[MISSING] MSEG as a routable modulation source** (PRD §12). Today the
@@ -204,6 +270,25 @@ mark it FIXED there and remove it here.
 
 ## Testing and release infrastructure
 
+- [ ] **[BUG] `render_presets` finds no presets by default.** Its
+  `--preset-dir` defaults to `presets/factory`, but it only reads that folder's
+  top level and every factory preset sits in a subfolder
+  (`src/bin/render_presets.rs:138-182`). Found by reading the code, not run.
+  *Accept:* it walks subfolders (or the default points at a folder with
+  presets), and the documented default command renders the bank.
+- [ ] **[BUG] `nightly` doesn't wait for the `web` and `guide` jobs.** It needs
+  only `bundle`, which needs only `checks`, so a nightly can publish while the
+  web app or the user Wiki fails, despite the workflow's comment ("after every
+  job passed", `.github/workflows/ci.yml` around line 339). *Accept:* `nightly`
+  needs every job, or the comment and `docs/ARCHITECTURE.md` say what it
+  waits for.
+- [ ] **[CHORE] `tests/daw/` and `verify-local.sh` promise more than they do.**
+  The DAW scripts are placeholders that render nothing and CI doesn't run;
+  `verify-local.sh` skips `cargo doc`, the separate `no_alloc` step, the
+  validators and the web and guide jobs, though it says it mirrors CI.
+  `tests/AGENTS.md` points at a missing `.sisyphus/evidence/` folder.
+  *Accept:* the scripts do what their descriptions say, or the descriptions
+  say what they do.
 - [ ] **[MISSING] DAW smoke automation** (REAPER / Bitwig / Ardour / Live / FL).
   Manual today: REAPER on Linux, in the development sessions (`docs/REAPER_TESTING.md`).
 - [ ] **[MISSING] Visual regression tests for the GUI.** The GUI lane drives

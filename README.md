@@ -144,10 +144,10 @@ The editor's **Save** writes the current sound as a named preset (every paramete
 - macOS: `~/Library/Application Support/Corrosion/Presets`
 - Linux and others: `$XDG_DATA_HOME/corrosion/presets`, or `~/.local/share/corrosion/presets`
 
-**Randomize** draws a new Size, Rust, Damage, Drive, Width, BODY and Output within its mode's ranges and safety limits (patches stay audible, and extreme damage never meets extreme drive):
+**Randomize** draws a new Size, Rust, Damage, Drive, Width, BODY and Output within its mode's ranges and safety limits (a draw that would be silent, or both very damaged and very driven, is drawn again):
 
 - **Safe:** gentle variations.
-- **Object:** size only.
+- **Object:** the size over a wide range (0.25 to 2), with Rust, Damage, Drive and BODY at 0, Width at 0.5 and Output at about −3 dB.
 - **Damage:** rust, damage and a little drive.
 - **Full:** everything, over wide ranges.
 
@@ -345,6 +345,19 @@ From `docs/BACKLOG.md`, which has the details and acceptance checks for each ite
 - **Clicks and zipper** (O5, O9): Echo Delay Time, Factory Size and Spring Tank Size jump their delays; changing Quality clears the clipper's filters.
 - **Performance** (O1–O4): the post chain is reconfigured every block, and the FEM body, the filter's drift and the strike-position wander compute per sample what could be cached.
 - **Code health** (O6–O8, N1–N8, N10): split the largest files, merge the duplicated mono and stereo render paths, and the smaller tidy-ups the review lists.
+
+**Found while writing the Internals wiki (2026-11-19):**
+
+- **Bow's Roughness** ripple aliases, at a different pitch at each sample rate.
+- **Wire Stiffness** (Wire Brush) changes the level, not the tone its help describes.
+- **Pos Wander** does nothing more in the top half of its range.
+- **The web app's diode dot** never lights.
+- **The Lookahead limiter** replays old samples right after a switch from Hard.
+- **Spread Width's help** says higher is wider; the code narrows.
+- **Metal Chain's Spread** is dead below 50 ms.
+- **A Kit preset saved with no pads** loads as Tonal (to decide).
+- **Tools:** `render_presets` finds no presets by default, and the `nightly` release doesn't wait for the web and Wiki jobs.
+- About 30 stale comments and doc passages, listed in the backlog.
 
 **Deferred features:**
 
