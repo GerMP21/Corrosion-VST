@@ -53,6 +53,8 @@ The directory is named `internals`, not `wiki`, because "Wiki" already means the
   3. Delete every tracked file in the clone, then copy `docs/internals/*.md` in.
   4. If `git status --porcelain` is empty, stop with success.
   5. Otherwise commit as `github-actions[bot]`, with the message `Publish docs/internals from <short sha>`, and push to the wiki's current branch.
+
+  *As built:* steps 3–5 (all but the push) live in `scripts/publish-wiki.sh <wiki-clone> [sha]`, so they can be run against a scratch repository; the workflow clones, runs it, and pushes when it committed.
 - **No third-party action:** about 20 lines of shell, so nothing outside GitHub's own `actions/checkout` (pinned as `ci.yml` pins it) gets a write token.
 - **The clone fails when the wiki isn't initialized.** The step names the fix: create any page once in the web UI.
 
@@ -99,7 +101,7 @@ These are the planned pages, in sidebar order; file names are the wiki names. Ex
 | | `Testing` | `tests/*`, `src/offline/*`, `src/bin/{render,render_presets}.rs`, the WAV scripts |
 | | `Benchmarks-and-Performance` | `benches/performance.rs`, `scripts/bench_ratios.py`, `web/scripts/bench-*.mjs` |
 | | `Building-and-Bundling` | `scripts/{bundle,check_bundle,validate-plugins,verify-local}.sh`, `scripts/third_party_notices.py` and `THIRD-PARTY-NOTICES.md`, `docs/REAPER_TESTING.md` |
-| | `CI-and-Releases` | `.github/workflows/ci.yml`, `.github/workflows/wiki.yml` |
+| | `CI-and-Releases` | `.github/workflows/ci.yml`, `.github/workflows/wiki.yml`, `scripts/publish-wiki.sh` |
 | Process | `Contributing-and-Keeping-This-Wiki-Current` | `CONTRIBUTING.md`, `openspec/`, `CLAUDE.md` |
 | | `Glossary` | none |
 
@@ -180,3 +182,8 @@ The old change directory is deleted in this change's first commit, with a line i
   - `every_source_file_is_named`, on the stub wiki: 134 unnamed items (non-test `src/` files plus the top-level items of `web/`, `scripts/`, `tests/`, `benches/` and `.github/workflows/`).
 
   With the scratch page removed, the suite passes, with the two coverage checks ignored until the pages exist (task 2.3).
+- **Publishing, dry run (task 3.1)** against a bare repository standing in for the wiki, holding `Home.md` and `Old-Page.md`:
+  - The first publish commits "Publish docs/internals from aaa1111" and pushes. The wiki then holds exactly `Home.md`, `_Footer.md` and `_Sidebar.md`, and `Old-Page.md` is gone.
+  - An unchanged re-run says "the wiki already matches" and makes no commit.
+  - Deleting `_Footer.md` from the source removes it from the wiki on the next publish.
+  - Not checked here: `actionlint` (not installed), and the real push with the job's token (first run on `main`).

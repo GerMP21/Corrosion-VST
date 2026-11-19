@@ -13,7 +13,7 @@
 
 ## 3. Publishing
 
-- [ ] 3.1 Add `.github/workflows/wiki.yml` per design Decision 2 (push to `main` on `docs/internals/**` or the workflow, `workflow_dispatch`, `contents: write`, concurrency group `wiki`, clone the wiki repository with the job's token, mirror, commit only when changed, a clear error when the wiki isn't initialized); verify it with `actionlint` if available and by a local dry run of its shell script against a scratch git repository standing in for the wiki (first publish, unchanged re-run makes no commit, a deleted page disappears)
+- [x] 3.1 Add `.github/workflows/wiki.yml` per design Decision 2 (push to `main` on `docs/internals/**` or the workflow, `workflow_dispatch`, `contents: write`, concurrency group `wiki`, clone the wiki repository with the job's token, mirror, commit only when changed, a clear error when the wiki isn't initialized); verify it with `actionlint` if available and by a local dry run of its shell script against a scratch git repository standing in for the wiki (first publish, unchanged re-run makes no commit, a deleted page disappears)
 
 ## 4. Start pages
 
