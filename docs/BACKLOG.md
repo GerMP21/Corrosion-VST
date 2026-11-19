@@ -236,7 +236,7 @@ pages describe the code as it is today, so each fix also updates its page.
 - [ ] **[CHORE] Stale comments and docs.** About 30 places where a comment,
   `docs/ARCHITECTURE.md`, the README or `CLAUDE.md` says something the code
   doesn't do, listed with file and line in
-  `openspec/changes/add-internals-wiki/design.md`; among them the Brightness
+  `openspec/changes/archive/2026-11-19-add-internals-wiki/design.md`; among them the Brightness
   macro's "±2 octaves" (it is ±1, `src/lib.rs:194, 244`), Global Time's
   inverted description (`src/params.rs:277`), the `PlayMode` doc still
   describing the old Kit slots (`src/params.rs:1255`), the module docs of
