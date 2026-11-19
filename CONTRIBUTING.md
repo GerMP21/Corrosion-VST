@@ -286,6 +286,11 @@ wrote the contribution or otherwise have the right to submit it under the
 project's license. For AI-assisted work, it's also your recorded statement that
 you take responsibility for the code's origin.
 
+You keep the copyright of what you contribute, and license it to everyone
+under the GPL v3 or later, like the rest of Corrosion. The project's notice
+reads "Copyright (C) 2026 German Martinez and the Corrosion contributors".
+A sign-off doesn't transfer your copyright.
+
 Sign off with the `-s` flag:
 
 ```

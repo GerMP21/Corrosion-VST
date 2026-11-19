@@ -28,7 +28,7 @@ The whole plugin, the same engine and editor, also runs in a web page: no downlo
    | Linux (x86_64) | `~/.vst3` | `~/.clap` |
 
 3. **macOS only:** the bundles are ad-hoc signed, not notarized, so macOS quarantines them after a download. Before the first use run `xattr -dr com.apple.quarantine ~/Library/Audio/Plug-Ins/VST3/Corrosion.vst3` (and the same for `CLAP/Corrosion.clap`).
-4. Rescan plugins in your host and load **Corrosion** (vendor "German Martinez") on an instrument track.
+4. Rescan plugins in your host and load **Corrosion** (vendor "Corrosion Contributors") on an instrument track.
 
 To build it yourself instead, see [Build And Run](#build-and-run).
 
@@ -392,7 +392,7 @@ When you post, please distinguish between:
 
 ## License
 
-Copyright (C) 2026 The Corrosion Synthesizer Authors.
+Copyright (C) 2026 German Martinez and the Corrosion contributors. Each contributor keeps the copyright of their own contributions.
 
 Corrosion is free software, released under the [GNU General Public License v3](LICENSE) or (at your option) any later version. It comes with no warranty; see the license for details.
 

@@ -160,7 +160,7 @@ Calls from JavaScript (`push_report`, `release_keys`, `set_user_presets`, `open_
 
 ## The page (`web/www/`)
 
-`index.html` is the app's chrome: a header (Start audio, status, CPU load, MIDI input select, BPM, Open preset…, Download preset, links home and to the Wiki and GitHub), the `#stage` with the `<canvas id="editor">`, and a footer. It uses only the site's tokens (`/theme/tokens.css`). The canvas is 80 % of the page width, 100 % under 900 px. `build.sh` stamps the commit into `<span id="build">`.
+`index.html` is the app's chrome: a header (Start audio, status, CPU load, MIDI input select, BPM, Open preset…, Download preset, links home and to the Wiki and GitHub), the `#stage` with the `<canvas id="editor">`, and a footer (the copyright notice, the license, links to the source and the third-party notices, and the build). It uses only the site's tokens (`/theme/tokens.css`). The canvas is 80 % of the page width, 100 % under 900 px. `build.sh` stamps the commit into `<span id="build">`.
 
 `app.js` (an ES module):
 
