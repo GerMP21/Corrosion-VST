@@ -298,6 +298,7 @@ Benchmarks are local and manual: `cargo bench --no-default-features --target x86
 
 Active design and implementation references:
 
+- [Corrosion Internals](https://github.com/GerMP21/Corrosion-VST/wiki): the GitHub Wiki, a detailed guide to how everything inside works, for developers (written in `docs/internals/`, published from `main`).
 - `docs/ARCHITECTURE.md`: as-built architecture, signal chain, and status of claimed work.
 - `docs/BACKLOG.md`: open work only (sound and behaviour items, deferred features, testing and release infrastructure), each with an acceptance check.
 - `openspec/specs/`: the behaviour contract, one spec per capability; `openspec/changes/archive/` holds every change's proposal, design, measurements and tasks.

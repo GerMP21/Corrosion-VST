@@ -8,6 +8,7 @@ to what actually ships, not to the aspirational DSP described in
 of a spec, that is called out explicitly.
 
 > Companion documents:
+> - [Corrosion Internals](https://github.com/GerMP21/Corrosion-VST/wiki) — the repository's GitHub Wiki, written in `docs/internals/`: a detailed, readable explanation of how every part works, page by page, each naming its source files. This file stays the as-built record with history and measurements; the wiki explains.
 > - `FABLE-CODE-REVIEW-2026-11-14.md` (repository root) — the current code review of the plugin; its open findings are tracked in `docs/BACKLOG.md`. The earlier reviews, every finding closed, are `docs/archive/FABLE-CODE-REVIEW-2026-07-07.md` (each fixed finding names its OpenSpec change) and `docs/archive/CODE-REVIEW-2026-05-27.md`.
 > - `docs/original-specs/` — DSP design notes (some aspirational; see status banners).
 > - `docs/PRD.md` — product requirements (MVP-era, see its status section).

@@ -57,9 +57,9 @@ Each task in groups 4–8 writes its pages in the voice of design Decision 6, wi
 ## 9. Finish the check, the rule and the docs
 
 - [ ] 9.1 Finish `Glossary` and `Home`'s map; remove the two `#[ignore]`s from 2.3; verify the full `internals_wiki` test passes with no unnamed file and no page missing from the sidebar
-- [ ] 9.2 Add the rule of design Decision 7 to `CLAUDE.md`: the new ⚠️ section after "The Wiki follows the plugin", the Build and test row, the OpenSpec "Docs" step. Verify by reading the three places together that they state the same rule and command
-- [ ] 9.3 Add the rule to `CONTRIBUTING.md` (next to "The Wiki follows the plugin" and in the test commands) and to `.github/pull_request_template.md` (the checklist item and the test command); verify both match `CLAUDE.md`'s wording
-- [ ] 9.4 Link the wiki from `docs/ARCHITECTURE.md` (top note) and `README.md`; verify the links point to `https://github.com/GerMP21/Corrosion-VST/wiki`
+- [x] 9.2 Add the rule of design Decision 7 to `CLAUDE.md`: the new ⚠️ section after "The Wiki follows the plugin", the Build and test row, the OpenSpec "Docs" step. Verify by reading the three places together that they state the same rule and command
+- [x] 9.3 Add the rule to `CONTRIBUTING.md` (next to "The Wiki follows the plugin" and in the test commands) and to `.github/pull_request_template.md` (the checklist item and the test command); verify both match `CLAUDE.md`'s wording
+- [x] 9.4 Link the wiki from `docs/ARCHITECTURE.md` (top note) and `README.md`; verify the links point to `https://github.com/GerMP21/Corrosion-VST/wiki`
 - [ ] 9.5 Close out: `cargo fmt --check`, clippy with `-D warnings` (CI lane), the full `cargo test --workspace --no-default-features`, the musl lane, `openspec validate add-internals-wiki`; record page count, test time and results in design.md `## Measurements`, update "Current state" in `CLAUDE.md`, then commit and push to `dev`
 
 ## Workflow follow-up

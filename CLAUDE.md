@@ -24,6 +24,28 @@ The maintainer is GerMP21. Every session is either the maintainer's or a contrib
 
 **Any change to how the plugin works or sounds MUST be recorded in the Corrosion Wiki (`/wiki/`, `web/guide/`) in the same change, in English and Spanish.** A control that acts differently, a new or removed behaviour, a new model or mode, a fixed surprise, a changed default or range: update every Wiki page that describes it (and Troubleshooting when it surprises people) before the change is closed. No change is done while the Wiki says something the plugin no longer does. This binds contributors' pull requests too: both languages, in the same pull request. The mechanics (data export, clips, screenshots, style) are in "User guide data and clips" and "Wiki writing style" below.
 
+## ⚠️ The Internals wiki follows the code, ALWAYS
+
+**Every change MUST update, in the same change, every page of the Internals wiki (`docs/internals/`, published as the repository's GitHub Wiki, "Corrosion Internals") that describes what it touched.** This covers code, build, tests, CI, scripts and tooling, not only sound. A new file is named in a page's `## Source files` section in the same change. No change is done while an Internals page says something the code no longer does. This binds contributors' pull requests too. The pages are English only.
+- **Find the affected pages:** `grep -rl '<path>' docs/internals/` for each file the change touches, then read what they say about it.
+- **The check:** `cargo test --no-default-features --test internals_wiki`. It runs in CI's test lane and fails:
+  - when a named path no longer exists;
+  - when a non-test `src/` file, or a top-level item of `web/`, `scripts/`, `tests/`, `benches/` or `.github/workflows/`, is named by no page;
+  - when a page or heading link is broken;
+  - when a page is missing from `_Sidebar.md`.
+
+  It can't tell whether the prose is still true; that's this rule.
+- **Format and voice:**
+  - one file per page, named as the wiki names it (`Signal-Chain.md`), first line `# Page Name`;
+  - links between pages as `[text](Page-Name#heading)`;
+  - Mermaid diagrams, each with a text twin;
+  - a final `## Source files` list of `https://github.com/GerMP21/Corrosion-VST/blob/main/<path>` links;
+  - written for a developer who has never seen the code: plain words, why before how, numbers where they matter, no review IDs or change names in the prose.
+
+  A new page goes in `_Sidebar.md`.
+- **Publishing:** `.github/workflows/wiki.yml` mirrors `docs/internals/` into the GitHub Wiki on every push to `main` (`scripts/publish-wiki.sh`). Never edit the wiki on GitHub: the next publish overwrites it.
+- **Alongside the other docs.** This doesn't replace `docs/ARCHITECTURE.md`, the as-built record with history and measurements, or the user Wiki (`web/guide/`, for players, EN + ES); update those as before.
+
 ## Third-party notices
 
 `THIRD-PARTY-NOTICES.md` holds the notices for everything in Corrosion that someone else wrote. The release zips carry it next to `LICENSE`, and the site's footers link it.
@@ -173,7 +195,7 @@ How each change has been done, and what the maintainer expects:
 1. **Tests first.** Write the spec scenarios as tests and verify they fail on the current code (or that a reference test passes), before implementing.
 2. **Implement**, keeping changes scoped to the tasks. Mark each task `- [x]` as soon as it is done and verified.
 3. **Record numbers in the change's `design.md`** (a `## Measurements` section): before/after values, benchmark tables, anything the proposal guessed wrong. When the implementation differs from a design decision, add an *As built* note rather than leaving the design stale.
-4. **Docs:** update `docs/ARCHITECTURE.md` (and the README when users see the change), and mark the finding FIXED in `FABLE-CODE-REVIEW-2026-11-14.md` (and remove its item from `docs/BACKLOG.md`) with date, change link and what proves it.
+4. **Docs:** update `docs/ARCHITECTURE.md`, every Internals wiki page that describes what changed (`docs/internals/`, see above), and the README when users see the change; and mark the finding FIXED in `FABLE-CODE-REVIEW-2026-11-14.md` (and remove its item from `docs/BACKLOG.md`) with date, change link and what proves it.
 5. **Close out:** `cargo fmt --check`, clippy with `-D warnings`, the full test suite, then commit and push.
 6. **Update "Current state" in this file** when a change is finished, without being asked: the date in its heading, the change's row (fixed or done), what is next, and the archive note. Don't record PR numbers, branches or merge status here: GitHub and git already hold them. Commit it with the change's close-out.
 
@@ -196,6 +218,7 @@ CI (`.github/workflows/ci.yml`) uses `x86_64-unknown-linux-musl` with the latest
 | musl parity | `CARGO_BUILD_TARGET=x86_64-unknown-linux-musl cargo test --workspace --no-default-features` (`rustup target add x86_64-unknown-linux-musl`) |
 | Real-time safety | `cargo test --no-default-features --test no_alloc` (debug only; the checking allocator doesn't exist in release) |
 | Docs | `cargo doc --no-deps --no-default-features` (should add no warnings) |
+| Internals wiki | `cargo test --no-default-features --test internals_wiki` (paths, coverage, links, sidebar of `docs/internals/`) |
 | Third-party notices | `python3 scripts/third_party_notices.py --check` (after a dependency change, run it without `--check` and commit `THIRD-PARTY-NOTICES.md`) |
 | Full local lane | `./scripts/verify-local.sh` |
 

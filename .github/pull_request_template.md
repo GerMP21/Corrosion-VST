@@ -80,6 +80,7 @@ If the pull request implements several planned changes or review findings, give 
 - [ ] `cargo test --lib` (editor tests)
 - [ ] `cargo test --no-default-features --test no_alloc` (debug build)
 - [ ] `cargo doc --no-deps --no-default-features` adds no warnings
+- [ ] `cargo test --no-default-features --test internals_wiki` (the Internals wiki's paths, coverage and links)
 - [ ] `npm run check -- --complete` in `web/guide/` (if the Wiki or its generated data changed)
 - [ ] `web/scripts/build.sh` (if the web app changed)
 - [ ] New tests fail without this change and pass with it
@@ -160,6 +161,7 @@ If the pull request implements several planned changes or review findings, give 
 - [ ] I added or updated tests, or explained above why that isn't possible
 - [ ] I updated the README and `docs/ARCHITECTURE.md` where this change affects them
 - [ ] If the plugin works or sounds different, I updated every Wiki page that describes it, in English and Spanish
+- [ ] I updated every Internals wiki page (`docs/internals/`) that describes the files I changed, and named any new file in a page's "Source files" section
 
 **Commits**
 - [ ] Commit messages follow the convention (imperative subject under 72 characters, with the change or finding ID when relevant)
