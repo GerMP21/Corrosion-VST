@@ -1,0 +1,1 @@
+Corrosion Internals is generated from [`docs/internals/`](https://github.com/GerMP21/Corrosion-VST/tree/main/docs/internals) in the repository. Edits made here are overwritten on the next publish: change the pages there, in a pull request.

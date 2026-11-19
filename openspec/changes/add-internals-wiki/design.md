@@ -169,3 +169,14 @@ The old change directory is deleted in this change's first commit, with a line i
 3. Merge `dev` into `main`: `wiki.yml` publishes. Check the Home page, the sidebar, a Mermaid diagram and a heading link on the live wiki.
 4. **Rollback:** revert the merge. To clear the wiki, run the workflow from a commit whose `docs/internals/` holds only a `Home.md`.
 
+
+## Measurements
+
+- **The checks, run red (task 2.2)** on a scratch page with a link to a missing file, a link to a missing heading, a link to a missing page, and no "Source files" section. Each check fails and names the item:
+  - `every_page_lists_its_source_files`: "Scratch-Mutation: no `## Source files` section".
+  - `every_linked_repository_path_exists`: "no file `src/no_such_file.rs`".
+  - `wiki_links_resolve`: "`Home#no-such-heading`: Home has no heading" and "`No-Such-Page` names no page".
+  - `sidebar_links_every_page`: "_Sidebar doesn't link: [\"Scratch-Mutation\"]".
+  - `every_source_file_is_named`, on the stub wiki: 134 unnamed items (non-test `src/` files plus the top-level items of `web/`, `scripts/`, `tests/`, `benches/` and `.github/workflows/`).
+
+  With the scratch page removed, the suite passes, with the two coverage checks ignored until the pages exist (task 2.3).

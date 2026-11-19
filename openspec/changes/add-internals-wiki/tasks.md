@@ -2,14 +2,14 @@
 
 ## 1. Replace the old proposal and scaffold
 
-- [ ] 1.1 Delete `openspec/changes/add-developer-site/`; verify `openspec list` no longer shows it and nothing under `openspec/specs/` or the docs references it (`grep -rn add-developer-site` outside this change)
-- [ ] 1.2 Create `docs/internals/` with `Home.md` (title "Corrosion Internals", a stub map), `_Sidebar.md` and `_Footer.md` (design Decision 3 wording); verify the three files exist and the directory has no `README.md`
+- [x] 1.1 Delete `openspec/changes/add-developer-site/`; verify `openspec list` no longer shows it and nothing under `openspec/specs/` or the docs references it (`grep -rn add-developer-site` outside this change)
+- [x] 1.2 Create `docs/internals/` with `Home.md` (title "Corrosion Internals", a stub map), `_Sidebar.md` and `_Footer.md` (design Decision 3 wording); verify the three files exist and the directory has no `README.md`
 
 ## 2. The check, tests first
 
-- [ ] 2.1 Write `tests/internals_wiki.rs` with the helper unit tests (GitHub heading slugger with repeats, "Source files" section parser, link extractor) and the five checks of design Decision 5; verify the helper tests pass and each check fails on the stub wiki, listing every offending page or file at once
-- [ ] 2.2 Run each check red against its mutation on a scratch page (a missing `blob/main/` path, an unnamed `src/` file, a broken `#anchor`, a page left out of `_Sidebar.md`, a page with no "Source files"), then remove the scratch page; record the mutations and results in design.md `## Measurements`
-- [ ] 2.3 Mark `every_source_file_is_named` and `sidebar_links_every_page` `#[ignore = "pages being written (add-internals-wiki)"]` until group 9, so intermediate commits keep the suite green; verify `cargo test --no-default-features --test internals_wiki` passes and the two ignored tests still fail with `-- --ignored`
+- [x] 2.1 Write `tests/internals_wiki.rs` with the helper unit tests (GitHub heading slugger with repeats, "Source files" section parser, link extractor) and the five checks of design Decision 5; verify the helper tests pass and each check fails on the stub wiki, listing every offending page or file at once
+- [x] 2.2 Run each check red against its mutation on a scratch page (a missing `blob/main/` path, an unnamed `src/` file, a broken `#anchor`, a page left out of `_Sidebar.md`, a page with no "Source files"), then remove the scratch page; record the mutations and results in design.md `## Measurements`
+- [x] 2.3 Mark `every_source_file_is_named` and `sidebar_links_every_page` `#[ignore = "pages being written (add-internals-wiki)"]` until group 9, so intermediate commits keep the suite green; verify `cargo test --no-default-features --test internals_wiki` passes and the two ignored tests still fail with `-- --ignored`
 
 ## 3. Publishing
 
