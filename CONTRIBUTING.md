@@ -245,7 +245,7 @@ reaches `main` through the maintainer's own pull requests.
 4. Follow the [commit message convention](#commit-messages). Signing off your
    commits is [strongly recommended](#signing-off-your-commits-dco).
 5. Make sure your change meets the [basic requirements](#basic-requirements).
-6. Fill in the pull request template: why the change is needed, what changed,
+6. Fill in the short pull request template: why the change is needed, what changed,
    how users will notice it, how you tested it, what's out of scope, and
    whether AI tools were used.
 
